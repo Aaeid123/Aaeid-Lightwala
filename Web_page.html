@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timestag – new generation of digital world</title>
+  <!-- SEO meta -->
+  <meta name="description" content="Timestag is an award‑winning digital marketing agency in Ahmedabad. We deliver data‑driven SEO, PPC, social media & web solutions." />
+  <!-- Tailwind + fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Clash+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- GSAP for smooth scroll animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    /* custom premium design */
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: #ffffff;
+      color: #1e1e2f;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .font-clash {
+      font-family: 'Clash Display', 'Plus Jakarta Sans', sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    /* glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05), 0 0 0 1px rgba(255,255,255,0.9) inset;
+    }
+    .glass-dark {
+      background: rgba(10, 10, 20, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    /* mesh background */
+    .mesh-bg {
+      background-color: #ffffff;
+      background-image: 
+        radial-gradient(at 20% 30%, rgba(220, 240, 255, 0.5) 0px, transparent 50%),
+        radial-gradient(at 80% 70%, rgba(230, 240, 255, 0.7) 0px, transparent 50%),
+        radial-gradient(at 40% 80%, rgba(210, 230, 255, 0.5) 0px, transparent 50%);
+    }
+    /* white gradient card */
+    .white-gradient-card {
+      background: linear-gradient(145deg, #ffffff 0%, #f9faff 100%);
+      border: 1px solid rgba(0,0,0,0.02);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+    }
+    /* pricing card */
+    .pricing-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 20px 40px -20px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      border: 1px solid rgba(0,0,0,0.02);
+    }
+    .pricing-card.hot {
+      background: linear-gradient(145deg, #ffffff, #f0f3ff);
+      border: 2px solid #4f46e5;
+      transform: scale(1.02);
+    }
+    .pricing-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px -20px rgba(79,70,229,0.3);
+    }
+    /* testimonial card */
+    .testimonial-card {
+      background: white;
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 20px 40px -20px rgba(0,0,0,0.1);
+    }
+    /* floating animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .float {
+      animation: float 6s ease-in-out infinite;
+    }
+    /* custom marquee */
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      animation: marquee 20s linear infinite;
+    }
+    /* blog card image */
+    .blog-img {
+      height: 220px;
+      object-fit: cover;
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+    .case-img {
+      height: 260px;
+      object-fit: cover;
+      border-radius: 1.5rem;
+    }
+    /* exact logo style from screenshot (merged) */
+    .logo-timestag {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .logo-top {
+      font-size: 2.2rem;
+      color: #1e1e2f;
+    }
+    .logo-bottom {
+      font-size: 2.2rem;
+      color: #4f46e5;
+      margin-top: -0.35rem;
+    }
+    .logo-tagline {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: #6b7280;
+      max-width: 120px;
+      line-height: 1.2;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body class="mesh-bg antialiased">
+
+  <!-- STICKY NAVBAR (merged: uses TIMES/AG stacked logo from first snippet + tagline) -->
+  <nav class="fixed top-0 left-0 w-full z-50 glass-card px-6 md:px-10 py-3 flex items-center justify-between transition-all duration-300" id="navbar">
+    <div class="flex items-center gap-3">
+      <div class="flex items-center">
+        <div class="logo-timestag">
+          <span class="logo-top">TIMES</span>
+          <span class="logo-bottom">AG</span>
+        </div>
+        <span class="logo-tagline hidden sm:block">NEW GENERATION OF DIGITAL WORLD</span>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
+      <a href="#home" class="hover:text-indigo-600 transition">Home</a>
+      <a href="#services" class="hover:text-indigo-600 transition">Services</a>
+      <a href="#portfolio" class="hover:text-indigo-600 transition">Case Studies</a>
+      <a href="#pricing" class="hover:text-indigo-600 transition">Pricing</a>
+      <a href="#testimonials" class="hover:text-indigo-600 transition">Testimonials</a>
+      <a href="#contact" class="hover:text-indigo-600 transition">Contact</a>
+    </div>
+    <a href="#contact" class="hidden md:block bg-black text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow-md hover:shadow-xl transition hover:-translate-y-0.5">Get consultation</a>
+    <button class="block md:hidden text-2xl" id="menuBtn"><i class="fas fa-bars"></i></button>
+  </nav>
+  <!-- mobile menu -->
+  <div id="mobileMenu" class="fixed top-20 left-4 right-4 glass-card rounded-3xl p-6 z-40 hidden flex-col gap-4 text-lg font-medium">
+    <a href="#home" class="py-2 hover:text-indigo-600">Home</a>
+    <a href="#services" class="py-2 hover:text-indigo-600">Services</a>
+    <a href="#portfolio" class="py-2 hover:text-indigo-600">Case Studies</a>
+    <a href="#pricing" class="py-2 hover:text-indigo-600">Pricing</a>
+    <a href="#testimonials" class="py-2 hover:text-indigo-600">Testimonials</a>
+    <a href="#contact" class="py-2 hover:text-indigo-600">Contact</a>
+    <a href="#contact" class="bg-black text-white px-6 py-3 rounded-full text-center mt-2">Get consultation</a>
+  </div>
+
+  <!-- HERO SECTION (merged: uses design from second snippet) -->
+  <section id="home" class="relative pt-36 pb-20 md:pt-44 md:pb-32 overflow-hidden">
+    <div class="absolute inset-0 mesh-bg -z-10"></div>
+    <div class="container mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="inline-block px-4 py-2 glass-card rounded-full text-xs font-semibold text-indigo-700 mb-6">🏆 AWARD‑WINNING DIGITAL AGENCY</div>
+        <h1 class="font-clash text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight text-gray-900">
+          Grow Your Business<br/>with <span class="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Data‑Driven</span><br/>Digital Strategy
+        </h1>
+        <p class="text-gray-600 text-lg mt-6 max-w-xl">We help ambitious brands achieve exponential growth through strategic digital marketing, stunning design, and cutting‑edge web development.</p>
+        <div class="flex flex-wrap gap-4 mt-8">
+          <a href="#contact" class="bg-black text-white px-8 py-4 rounded-full text-sm font-semibold shadow-xl hover:shadow-2xl transition hover:-translate-y-1 flex items-center gap-2">Start your journey <i class="fas fa-arrow-right"></i></a>
+          <a href="#portfolio" class="glass-card px-8 py-4 rounded-full text-sm font-semibold border border-white/50 hover:bg-white/90 transition">View our work</a>
+        </div>
+        <!-- stats row from screenshots (934,430,502) -->
+        <div class="flex gap-8 mt-12">
+          <div><span class="text-4xl font-black text-indigo-600">934+</span><p class="text-sm text-gray-500">Successful Projects</p></div>
+          <div><span class="text-4xl font-black text-purple-600">430+</span><p class="text-sm text-gray-500">Quality Clients</p></div>
+          <div><span class="text-4xl font-black text-pink-600">502+</span><p class="text-sm text-gray-500">Trusted Partners</p></div>
+        </div>
+      </div>
+      <!-- hero right image -->
+      <div class="relative float">
+        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&auto=format" class="rounded-[2.5rem] shadow-2xl border-8 border-white/70 rotate-2 hover:rotate-0 transition" alt="digital strategy">
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES section (4 cards from second snippet) -->
+  <section id="services" class="py-24 bg-white/50 backdrop-blur-sm">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-indigo-600 font-semibold text-sm tracking-widest">OUR SERVICES</span>
+        <h2 class="font-clash text-4xl md:text-5xl mt-4 mb-6">What we offer</h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+        <div class="white-gradient-card rounded-3xl p-8 hover:shadow-2xl transition hover:-translate-y-2">
+          <i class="fas fa-search text-4xl text-indigo-600 mb-5"></i>
+          <h3 class="font-clash text-2xl font-semibold mb-2">SEO Optimization</h3>
+          <p class="text-gray-500 text-sm">Elevate your online presence and climb search engine rankings.</p>
+        </div>
+        <div class="white-gradient-card rounded-3xl p-8 hover:shadow-2xl transition hover:-translate-y-2">
+          <i class="fas fa-ad text-4xl text-purple-600 mb-5"></i>
+          <h3 class="font-clash text-2xl font-semibold mb-2">PPC Advertising</h3>
+          <p class="text-gray-500 text-sm">Maximize ROI with precision‑targeted PPC campaigns.</p>
+        </div>
+        <div class="white-gradient-card rounded-3xl p-8 hover:shadow-2xl transition hover:-translate-y-2">
+          <i class="fas fa-paint-brush text-4xl text-pink-600 mb-5"></i>
+          <h3 class="font-clash text-2xl font-semibold mb-2">Web Design & Dev</h3>
+          <p class="text-gray-500 text-sm">Craft a captivating online identity with bespoke design.</p>
+        </div>
+        <div class="white-gradient-card rounded-3xl p-8 hover:shadow-2xl transition hover:-translate-y-2">
+          <i class="fas fa-share-alt text-4xl text-indigo-600 mb-5"></i>
+          <h3 class="font-clash text-2xl font-semibold mb-2">Social Media Marketing</h3>
+          <p class="text-gray-500 text-sm">Harness the power of social media to build brand loyalty.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES (portfolio) – merged from first snippet's "Cair Euromatic" and "Airmax" but with second snippet's style -->
+  <section id="portfolio" class="py-24 mesh-bg">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-indigo-600 font-semibold text-sm tracking-widest">SUCCESS STORIES</span>
+        <h2 class="font-clash text-4xl md:text-5xl mt-4 mb-6">Case studies</h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+        <!-- Cair Euromatic Case Study (from first snippet) -->
+        <div class="glass-card rounded-3xl overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format" class="case-img w-full group-hover:scale-105 transition duration-500" alt="Cair Euromatic">
+          <div class="p-6">
+            <span class="text-xs font-bold text-indigo-600">SEO / LOCAL SEO</span>
+            <h3 class="font-clash text-2xl mt-1">Cair Euromatic</h3>
+            <p class="text-gray-500 text-sm mt-2">We achieved good results in organic traffic and a high number of leads.</p>
+            <div class="flex justify-between items-center mt-4 text-sm font-semibold">
+              <span><i class="fas fa-chart-line text-indigo-500"></i> +2,300 sessions</span>
+              <a href="#" class="text-indigo-600 hover:gap-2 flex items-center gap-1">Full detail <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- Airmax Case Study (from first snippet) -->
+        <div class="glass-card rounded-3xl overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format" class="case-img w-full group-hover:scale-105 transition" alt="Airmax Pneumatics">
+          <div class="p-6">
+            <span class="text-xs font-bold text-purple-600">SEO / SOCIAL / GOOGLE ADS</span>
+            <h3 class="font-clash text-2xl mt-1">Airmax Pneumatics Ltd</h3>
+            <p class="text-gray-500 text-sm mt-2">Excellent success in SEO, social media, and Google Ads for this project.</p>
+            <div class="mt-4 text-sm font-semibold"><span class="bg-purple-100 px-3 py-1 rounded-full">200+ keywords in top 10</span></div>
+          </div>
+        </div>
+        <!-- additional case (generic) from first snippet -->
+        <div class="glass-card rounded-3xl overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=600&auto=format" class="case-img w-full group-hover:scale-105 transition" alt="social campaign">
+          <div class="p-6">
+            <span class="text-xs font-bold text-pink-600">SOCIAL MEDIA</span>
+            <h3 class="font-clash text-2xl mt-1">Festival campaign</h3>
+            <p class="text-gray-500 text-sm mt-2">Leveraged Indian festivals to boost engagement by 300%.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING section (second snippet) -->
+  <section id="pricing" class="py-24 bg-white">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-indigo-600 font-semibold text-sm tracking-widest">PRICING</span>
+        <h2 class="font-clash text-4xl md:text-5xl mt-4 mb-2">Simple, transparent pricing</h2>
+        <p class="text-gray-500">Choose the perfect plan for your business needs</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 mt-16">
+        <!-- Starter -->
+        <div class="pricing-card">
+          <h3 class="font-clash text-2xl font-bold">Starter</h3>
+          <p class="text-4xl font-black mt-4">₹29,999<span class="text-sm font-normal text-gray-400">/month</span></p>
+          <p class="text-gray-500 text-sm mt-2">Perfect for small businesses</p>
+          <ul class="mt-6 space-y-3">
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>SEO Optimization</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Social Media (2 platforms)</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Monthly Analytics Report</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Email Support</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Basic Website Audit</li>
+          </ul>
+          <a href="#contact" class="mt-8 inline-block w-full text-center bg-gray-100 hover:bg-gray-200 rounded-full py-3 font-semibold transition">Get started</a>
+        </div>
+        <!-- Growth (most popular) -->
+        <div class="pricing-card hot relative overflow-hidden">
+          <span class="absolute top-4 right-4 bg-indigo-600 text-white text-xs px-3 py-1 rounded-full">Most Popular</span>
+          <h3 class="font-clash text-2xl font-bold">Growth</h3>
+          <p class="text-4xl font-black mt-4">₹59,999<span class="text-sm font-normal text-gray-400">/month</span></p>
+          <p class="text-gray-500 text-sm mt-2">Ideal for growing businesses</p>
+          <ul class="mt-6 space-y-3">
+            <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Everything in Starter</li>
+            <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>PPC Campaign Management</li>
+            <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Social Media (4 platforms)</li>
+            <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Content Marketing</li>
+            <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Weekly Reports + Priority Support</li>
+            <li><i class="fas fa-check-circle text-indigo-600 mr-2"></i>Conversion Optimization</li>
+          </ul>
+          <a href="#contact" class="mt-8 inline-block w-full text-center bg-indigo-600 text-white hover:bg-indigo-700 rounded-full py-3 font-semibold transition">Get started</a>
+        </div>
+        <!-- Enterprise -->
+        <div class="pricing-card">
+          <h3 class="font-clash text-2xl font-bold">Enterprise</h3>
+          <p class="text-4xl font-black mt-4">Custom</p>
+          <p class="text-gray-500 text-sm mt-2">For large‑scale operations</p>
+          <ul class="mt-6 space-y-3">
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Everything in Growth</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Dedicated Account Manager</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Custom Strategy Development</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Advanced Analytics + 24/7 Support</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>Quarterly Strategy Sessions</li>
+            <li><i class="fas fa-check-circle text-indigo-500 mr-2"></i>White‑label Reporting</li>
+          </ul>
+          <a href="#contact" class="mt-8 inline-block w-full text-center bg-gray-100 hover:bg-gray-200 rounded-full py-3 font-semibold transition">Contact us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS slider (second snippet) -->
+  <section id="testimonials" class="py-24 mesh-bg">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-indigo-600 font-semibold text-sm tracking-widest">TESTIMONIALS</span>
+        <h2 class="font-clash text-4xl md:text-5xl mt-4 mb-6">Client love</h2>
+      </div>
+      <div class="relative max-w-4xl mx-auto mt-16">
+        <div class="overflow-hidden">
+          <div class="flex transition-transform duration-500 ease-out" id="testimonialTrack">
+            <!-- card 1 -->
+            <div class="min-w-full md:min-w-[33.33%] p-4">
+              <div class="testimonial-card h-full">
+                <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                <p class="text-gray-700 italic">"Working with Timestag was a game-changer. They don't just execute — they become true partners. Our ROI has tripled!"</p>
+                <div class="mt-6 font-bold">Michael Chen</div>
+                <div class="text-sm text-gray-500">Marketing Director, GrowthCo</div>
+              </div>
+            </div>
+            <!-- card 2 -->
+            <div class="min-w-full md:min-w-[33.33%] p-4">
+              <div class="testimonial-card h-full">
+                <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                <p class="text-gray-700 italic">"The creative excellence and strategic thinking at Timestag is unmatched. They helped us build a community of 50K+ followers."</p>
+                <div class="mt-6 font-bold">Emily Rodriguez</div>
+                <div class="text-sm text-gray-500">Founder, StyleHub</div>
+              </div>
+            </div>
+            <!-- card 3 -->
+            <div class="min-w-full md:min-w-[33.33%] p-4">
+              <div class="testimonial-card h-full">
+                <div class="flex text-yellow-400 mb-4">★★★★★</div>
+                <p class="text-gray-700 italic">"Incredible results! Our lead generation increased by 300% and conversion rates doubled. Timestag delivers on every promise."</p>
+                <div class="mt-6 font-bold">David Park</div>
+                <div class="text-sm text-gray-500">VP Marketing, FinanceFlow</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-card hover:bg-white/90" onclick="moveTestimonial(-1)"><i class="fas fa-chevron-left"></i></button>
+        <button class="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass-card hover:bg-white/90" onclick="moveTestimonial(1)"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BLOGS section (merged from first snippet blog titles, but using second snippet's layout) -->
+  <section id="blogs" class="py-24 bg-white">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-indigo-600 font-semibold text-sm tracking-widest">INSIGHTS</span>
+        <h2 class="font-clash text-4xl md:text-5xl mt-4 mb-6">Latest blogs</h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+        <!-- blog 1: LCP (from first snippet) -->
+        <div class="white-gradient-card rounded-3xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1432888622747-4eb9a8f5a6f8?w=600&auto=format" class="blog-img" alt="LCP">
+          <div class="p-6">
+            <p class="text-xs text-indigo-600 font-bold mb-2">www.timestag.com</p>
+            <h3 class="font-clash text-xl font-bold leading-tight">Reducing the Largest Contentful Paint Score for Faster Load Times</h3>
+            <p class="text-gray-500 text-sm mt-3">The entire performance of a website is critical... LCP is a key indicator.</p>
+            <a href="#" class="mt-4 inline-flex items-center text-indigo-600 font-semibold">Read more <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+        <!-- blog 2: Core Web Vitals Explained (from first snippet) -->
+        <div class="white-gradient-card rounded-3xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format" class="blog-img" alt="Core Web Vitals">
+          <div class="p-6">
+            <p class="text-xs text-purple-600 font-bold mb-2">www.timestag.com</p>
+            <h3 class="font-clash text-xl font-bold leading-tight">Core Web Vitals Explained: Boosting User Experience and Search Rankings</h3>
+            <p class="text-gray-500 text-sm mt-3">In the fast-paced world of Digital Marketing, creating an exceptional user experience...</p>
+            <a href="#" class="mt-4 inline-flex items-center text-purple-600 font-semibold">Read more <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+        <!-- blog 3: Festivals Social Media (from first snippet) -->
+        <div class="white-gradient-card rounded-3xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=600&auto=format" class="blog-img" alt="Festivals">
+          <div class="p-6">
+            <p class="text-xs text-pink-600 font-bold mb-2">www.timestag.com</p>
+            <h3 class="font-clash text-xl font-bold leading-tight">Festivals Are the Perfect Time for Social Media Marketing in India</h3>
+            <p class="text-gray-500 text-sm mt-3">India is renowned for vibrant festivals... people are more likely to engage.</p>
+            <a href="#" class="mt-4 inline-flex items-center text-pink-600 font-semibold">Read more <i class="fas fa-arrow-right ml-2"></i></a>
+          </div>
+        </div>
+        <!-- blog 4: Real Estate SEO (from first snippet) -->
+        <div class="white-gradient-card rounded-3xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=600&auto=format" class="blog-img" alt="Real estate">
+          <div class="p-6">
+            <h3 class="font-clash text-xl font-bold">How to Use SEO to Generate More Leads for Your Real Estate Business</h3>
+            <p class="text-gray-500 text-sm mt-2">The real property industry has become more competitive...</p>
+          </div>
+        </div>
+        <!-- blog 5: 7 SEO Best Practices 2024 (from first snippet) -->
+        <div class="white-gradient-card rounded-3xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&auto=format" class="blog-img" alt="SEO best practices">
+          <div class="p-6">
+            <h3 class="font-clash text-xl font-bold">7 SEO Best Practices for Better Rankings in 2024</h3>
+            <p class="text-gray-500 text-sm mt-2">Stay up-to-date on innovative SEO features...</p>
+          </div>
+        </div>
+        <!-- blog 6: Local SEO Tips (from first snippet) -->
+        <div class="white-gradient-card rounded-3xl overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?w=600&auto=format" class="blog-img" alt="Local SEO">
+          <div class="p-6">
+            <h3 class="font-clash text-xl font-bold">Local SEO Tips: Dos and Don'ts to Increase Local Visibility</h3>
+            <p class="text-gray-500 text-sm mt-2">Optimizing your online presence can significantly increase visibility...</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-12">
+        <a href="#" class="inline-flex items-center gap-2 bg-black text-white px-8 py-4 rounded-full font-semibold">View all blogs <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ section (second snippet) -->
+  <section class="py-24 bg-white">
+    <div class="container mx-auto px-6 lg:px-10 max-w-3xl">
+      <h2 class="font-clash text-4xl text-center mb-4">Frequently Asked Questions</h2>
+      <p class="text-center text-gray-500 mb-12">Got questions? We've got answers.</p>
+      <div class="space-y-4">
+        <div class="border-b border-gray-200 pb-4">
+          <button class="flex justify-between items-center w-full text-left font-semibold text-lg" onclick="toggleFaq(this)">What makes Timestag different from other agencies? <i class="fas fa-chevron-down transition-transform"></i></button>
+          <div class="hidden mt-2 text-gray-500">We combine data, creativity, and transparency — every campaign is backed by measurable ROI. Based in Ahmedabad, serving the new generation of digital world.</div>
+        </div>
+        <div class="border-b border-gray-200 pb-4">
+          <button class="flex justify-between items-center w-full text-left font-semibold text-lg" onclick="toggleFaq(this)">How long does it take to see results? <i class="fas fa-chevron-down"></i></button>
+          <div class="hidden mt-2 text-gray-500">SEO 3‑6 months, PPC within days, social growth in 60‑90 days. We set clear milestones.</div>
+        </div>
+        <div class="border-b border-gray-200 pb-4">
+          <button class="flex justify-between items-center w-full text-left font-semibold text-lg" onclick="toggleFaq(this)">Do you work with businesses of all sizes? <i class="fas fa-chevron-down"></i></button>
+          <div class="hidden mt-2 text-gray-500">Absolutely! We have custom packages for startups, SMEs, and large enterprises.</div>
+        </div>
+        <div class="border-b border-gray-200 pb-4">
+          <button class="flex justify-between items-center w-full text-left font-semibold text-lg" onclick="toggleFaq(this)">What industries do you specialize in? <i class="fas fa-chevron-down"></i></button>
+          <div class="hidden mt-2 text-gray-500">E‑commerce, healthcare, real estate, SaaS, education, hospitality, and manufacturing.</div>
+        </div>
+        <div class="border-b border-gray-200 pb-4">
+          <button class="flex justify-between items-center w-full text-left font-semibold text-lg" onclick="toggleFaq(this)">How do you measure success? <i class="fas fa-chevron-down"></i></button>
+          <div class="hidden mt-2 text-gray-500">Through KPIs aligned to your goals: traffic, leads, CPA, ROAS, conversion rates, and revenue impact.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FORM section (second snippet) -->
+  <section class="py-24 mesh-bg">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="glass-card rounded-3xl p-12 lg:p-16 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="font-clash text-4xl lg:text-5xl font-bold leading-tight">Ready to Grow Your Business?</h2>
+          <p class="text-gray-600 text-lg mt-4">Get a free consultation and discover how we can help you achieve your marketing goals.</p>
+          <ul class="mt-6 space-y-3">
+            <li class="flex items-center gap-3"><i class="fas fa-check-circle text-indigo-500 text-xl"></i> Free 30‑minute strategy session</li>
+            <li class="flex items-center gap-3"><i class="fas fa-check-circle text-indigo-500 text-xl"></i> Custom growth roadmap</li>
+            <li class="flex items-center gap-3"><i class="fas fa-check-circle text-indigo-500 text-xl"></i> No commitment required</li>
+          </ul>
+        </div>
+        <div class="glass-card rounded-2xl p-8">
+          <form onsubmit="submitForm(event)">
+            <input type="text" placeholder="Your Name" class="w-full p-4 rounded-xl border border-gray-200 mb-4" required>
+            <input type="email" placeholder="Email Address" class="w-full p-4 rounded-xl border border-gray-200 mb-4" required>
+            <input type="tel" placeholder="Phone Number" class="w-full p-4 rounded-xl border border-gray-200 mb-4">
+            <textarea rows="4" placeholder="Tell us about your project..." class="w-full p-4 rounded-xl border border-gray-200 mb-4" required></textarea>
+            <button type="submit" class="w-full bg-black text-white py-4 rounded-full font-semibold hover:shadow-xl transition flex items-center justify-center gap-2">Get Free Consultation →</button>
+            <p id="formMsg2" class="text-sm text-green-600 mt-4 hidden">✓ Thanks! We'll contact you within 24h.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT section (second snippet) with map -->
+  <section id="contact" class="py-24 bg-white">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="text-center max-w-2xl mx-auto">
+        <span class="text-indigo-600 font-semibold text-sm tracking-widest">GET IN TOUCH</span>
+        <h2 class="font-clash text-4xl md:text-5xl mt-4 mb-6">We'd love to hear from you</h2>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-12 mt-20">
+        <div class="space-y-8">
+          <!-- email -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600"><i class="fas fa-envelope"></i></div>
+            <div><h4 class="font-bold text-lg">Email Us</h4><p class="text-gray-500">hello@timestag.com<br>info@timestag.com</p></div>
+          </div>
+          <!-- phone -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600"><i class="fas fa-phone"></i></div>
+            <div><h4 class="font-bold text-lg">Call Us</h4><p class="text-gray-500">+91 93778 07985<br>Mon–Sat, 10am–7pm IST</p></div>
+          </div>
+          <!-- visit -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center text-pink-600"><i class="fas fa-map-pin"></i></div>
+            <div><h4 class="font-bold text-lg">Visit Us</h4><p class="text-gray-500">Siddhivinayak Business Tower, A1122<br>Makarba, Ahmedabad 380051</p></div>
+          </div>
+          <!-- social -->
+          <div class="pt-6">
+            <h4 class="font-bold text-lg mb-3">Follow Us</h4>
+            <div class="flex gap-4">
+              <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-indigo-600 hover:text-white transition flex items-center justify-center"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <!-- map -->
+        <div class="rounded-3xl overflow-hidden h-80 shadow-xl">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.966835432117!2d72.52793931535494!3d23.01317968495836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f0a14a9bcf%3A0x85ada5e60bfcb73!2sMakarba%2C%20Ahmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (second snippet) -->
+  <footer class="bg-gray-50 py-12 border-t border-gray-200">
+    <div class="container mx-auto px-6 lg:px-10">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="logo-timestag">
+            <span class="logo-top text-2xl">TIMES</span>
+            <span class="logo-bottom text-2xl">AG</span>
+          </div>
+          <p class="text-gray-500 text-sm mt-4">Your trusted partner in digital excellence. We help ambitious brands achieve exponential growth.</p>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Services</h4>
+          <ul class="space-y-2 text-gray-500"><li>SEO Optimization</li><li>Social Media Marketing</li><li>PPC Advertising</li><li>Web Development</li></ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Company</h4>
+          <ul class="space-y-2 text-gray-500"><li>Portfolio</li><li>Blogs</li><li>Pricing</li><li>Testimonials</li></ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Contact</h4>
+          <ul class="space-y-2 text-gray-500"><li><i class="fas fa-envelope w-5 mr-2"></i>hello@timestag.com</li><li><i class="fas fa-phone w-5 mr-2"></i>+91 93778 07985</li><li><i class="fas fa-map-pin w-5 mr-2"></i>Siddhivinayak Business Tower, A1122, Makarba, Ahmedabad</li><li><i class="fas fa-globe w-5 mr-2"></i>www.timestag.com</li></ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 mt-12 pt-6 text-center text-gray-400 text-sm">
+        © 2026 Timestag. All rights reserved. New generation of digital world.
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript (merged from both snippets) -->
+  <script>
+    // mobile menu toggle (from both)
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    // FAQ toggle (from second)
+    function toggleFaq(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      content.classList.toggle('hidden');
+      icon.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+    window.toggleFaq = toggleFaq;
+
+    // testimonial slider (from second)
+    let currentSlide = 0;
+    const track = document.getElementById('testimonialTrack');
+    const slides = track ? track.children.length : 0;
+    function moveTestimonial(dir) {
+      if (!track) return;
+      currentSlide = (currentSlide + dir + slides) % slides;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+    window.moveTestimonial = moveTestimonial;
+    setInterval(() => moveTestimonial(1), 5000);
+
+    // form demo (from second)
+    function submitForm(e) {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg2') || document.createElement('p');
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 3000);
+    }
+    window.submitForm = submitForm;
+
+    // GSAP scroll animations (from both)
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.utils.toArray('.white-gradient-card, .pricing-card, .testimonial-card').forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: { trigger: card, start: 'top 85%' },
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        delay: i * 0.1
+      });
+    });
+
+    // navbar background on scroll (from both)
+    window.addEventListener('scroll', function() {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 50) nav.classList.add('bg-white/90', 'backdrop-blur-xl', 'shadow-md');
+      else nav.classList.remove('bg-white/90', 'backdrop-blur-xl', 'shadow-md');
+    });
+  </script>
+</body>
+</html>

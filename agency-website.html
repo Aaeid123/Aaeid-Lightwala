@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Digital — Enterprise Growth Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --charcoal: #0F172A;
+  --charcoal-80: rgba(15,23,42,0.8);
+  --green: #00D084;
+  --green-dark: #00A066;
+  --blue: #2563EB;
+  --white: #FFFFFF;
+  --off-white: #F8FAFC;
+  --light-gray: #F1F5F9;
+  --mid-gray: #94A3B8;
+  --text-body: #334155;
+  --border: rgba(15,23,42,0.08);
+  --glass: rgba(255,255,255,0.7);
+  --glass-border: rgba(255,255,255,0.4);
+  --shadow-sm: 0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+  --shadow-md: 0 4px 24px rgba(15,23,42,0.08), 0 2px 8px rgba(15,23,42,0.04);
+  --shadow-lg: 0 20px 60px rgba(15,23,42,0.12), 0 8px 24px rgba(15,23,42,0.06);
+  --shadow-xl: 0 40px 80px rgba(15,23,42,0.16);
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  --nav-bg: rgba(248,250,252,0.85);
+  --body-bg: #F8FAFC;
+  --section-dark-bg: #0F172A;
+  --section-dark-text: #F8FAFC;
+  --card-bg: rgba(255,255,255,0.9);
+}
+
+[data-theme="dark"] {
+  --charcoal: #F8FAFC;
+  --white: #0F172A;
+  --off-white: #111827;
+  --light-gray: #1E293B;
+  --mid-gray: #64748B;
+  --text-body: #CBD5E1;
+  --border: rgba(248,250,252,0.08);
+  --glass: rgba(30,41,59,0.85);
+  --glass-border: rgba(255,255,255,0.1);
+  --nav-bg: rgba(15,23,42,0.9);
+  --body-bg: #0F172A;
+  --card-bg: rgba(30,41,59,0.9);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  background: var(--body-bg);
+  color: var(--text-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; height: auto; }
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--green);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+.cursor-follower {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--green);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99998;
+  transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
+}
+.cursor.hover { width: 20px; height: 20px; background: var(--blue); }
+.cursor-follower.hover { width: 56px; height: 56px; opacity: 0.3; }
+
+/* ===== SCROLL PROGRESS ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  z-index: 9999;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ===== LOADING SCREEN ===== */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--charcoal);
+  z-index: 99997;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+.loader.hidden { opacity: 0; visibility: hidden; }
+.loader-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 36px;
+  color: white;
+  letter-spacing: -1px;
+}
+.loader-logo span { color: var(--green); }
+.loader-bar {
+  width: 200px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loader-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  width: 0%;
+  animation: loadFill 1.8s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+@keyframes loadFill { to { width: 100%; } }
+
+/* ===== DARK MODE TOGGLE ===== */
+.dark-toggle {
+  position: fixed;
+  right: 24px;
+  bottom: 32px;
+  z-index: 9990;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  cursor: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
+}
+.dark-toggle:hover { transform: scale(1.1); box-shadow: var(--shadow-xl); }
+
+/* ===== TYPOGRAPHY ===== */
+h1,h2,h3,h4,h5 { font-family: 'Poppins', sans-serif; color: var(--charcoal); line-height: 1.15; }
+h1 { font-size: clamp(44px, 6vw, 80px); font-weight: 800; letter-spacing: -2px; }
+h2 { font-size: clamp(32px, 4vw, 56px); font-weight: 700; letter-spacing: -1.5px; }
+h3 { font-size: clamp(20px, 2.5vw, 28px); font-weight: 700; letter-spacing: -0.5px; }
+h4 { font-size: 18px; font-weight: 600; }
+p { font-size: 16px; line-height: 1.7; color: var(--text-body); }
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== LAYOUT ===== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+section { padding: 120px 0; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: none;
+  border: none;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.2px;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.btn:hover::after { opacity: 1; }
+.btn:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,208,132,0.25); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--green), #00B570);
+  color: var(--charcoal);
+}
+.btn-primary:hover { box-shadow: 0 16px 48px rgba(0,208,132,0.4); }
+.btn-secondary {
+  background: transparent;
+  color: var(--charcoal);
+  border: 1.5px solid var(--border);
+  backdrop-filter: blur(10px);
+}
+.btn-secondary:hover { background: var(--light-gray); box-shadow: var(--shadow-md); }
+.btn-white {
+  background: white;
+  color: var(--charcoal);
+}
+.btn-white:hover { box-shadow: 0 16px 48px rgba(255,255,255,0.2); transform: translateY(-3px); }
+.btn-ghost {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.2); }
+.btn .arrow { transition: transform 0.3s ease; }
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* ===== HEADER ===== */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 9000;
+  padding: 0;
+  transition: var(--transition);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+header.scrolled .nav-inner { padding: 14px 40px; box-shadow: var(--shadow-md); }
+.logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--charcoal);
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-mark {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 800;
+}
+.logo span { color: var(--green); }
+nav { display: flex; align-items: center; gap: 4px; }
+nav a {
+  padding: 8px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-body);
+  border-radius: 8px;
+  transition: var(--transition);
+  position: relative;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%; right: 50%;
+  height: 2px;
+  background: var(--green);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+nav a:hover { color: var(--charcoal); }
+nav a:hover::after { left: 16px; right: 16px; }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 80px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,208,132,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 20% 70%, rgba(37,99,235,0.06) 0%, transparent 60%),
+              linear-gradient(180deg, var(--off-white) 0%, var(--body-bg) 100%);
+  z-index: 0;
+}
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.hero-orb-1 {
+  width: 500px; height: 500px;
+  background: var(--green);
+  top: -100px; right: -100px;
+  animation-delay: 0s;
+}
+.hero-orb-2 {
+  width: 300px; height: 300px;
+  background: var(--blue);
+  bottom: 0; left: -50px;
+  animation-delay: 3s;
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-body);
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-sm);
+  font-family: 'Poppins', sans-serif;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+.hero h1 {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, var(--charcoal) 0%, #1E40AF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme="dark"] .hero h1 {
+  background: linear-gradient(135deg, #F8FAFC 0%, #7DD3FC 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.hero h1 .accent { color: var(--green); -webkit-text-fill-color: var(--green); }
+.hero p {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text-body);
+  margin-bottom: 40px;
+  max-width: 560px;
+  font-weight: 400;
+}
+.hero-ctas { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 56px; }
+.hero-trust {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.trust-label { font-size: 12px; font-weight: 500; color: var(--mid-gray); font-family: 'Poppins', sans-serif; white-space: nowrap; }
+.trust-logos { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+.trust-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--mid-gray);
+  letter-spacing: -0.5px;
+  transition: var(--transition);
+  opacity: 0.6;
+}
+.trust-logo:hover { opacity: 1; color: var(--charcoal); }
+.hero-visual {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 520px;
+  z-index: 1;
+}
+.hero-dashboard {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(40px);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-xl);
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.dash-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 16px; color: var(--charcoal); }
+.dash-badge {
+  background: rgba(0,208,132,0.12);
+  color: var(--green-dark);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+.dash-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+.dash-stat {
+  background: var(--light-gray);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+[data-theme="dark"] .dash-stat { background: rgba(255,255,255,0.05); }
+.dash-stat-value {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--charcoal);
+  letter-spacing: -1px;
+}
+.dash-stat-label { font-size: 11px; color: var(--mid-gray); font-weight: 500; }
+.dash-stat-change {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green-dark);
+  margin-top: 4px;
+}
+.dash-chart { height: 80px; position: relative; overflow: hidden; }
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 100%;
+}
+.chart-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--green), rgba(0,208,132,0.3));
+  border-radius: 4px 4px 0 0;
+  transition: var(--transition);
+  animation: barGrow 1.5s ease forwards;
+  transform-origin: bottom;
+}
+@keyframes barGrow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* ===== SOCIAL PROOF ===== */
+.social-proof {
+  padding: 80px 0;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; text-align: center; }
+.stat-item {}
+.stat-number {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: clamp(36px, 4vw, 52px);
+  color: var(--charcoal);
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-number .unit { color: var(--green); }
+.stat-desc { font-size: 14px; color: var(--mid-gray); font-weight: 500; }
+
+/* ===== SECTION HEADERS ===== */
+.section-header { text-align: center; max-width: 640px; margin: 0 auto 72px; }
+.section-header .label { margin-bottom: 16px; display: block; }
+.section-header h2 { margin-bottom: 20px; }
+.section-header p { font-size: 18px; line-height: 1.7; }
+
+/* ===== SERVICES ===== */
+.services { background: var(--off-white); }
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.service-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--blue));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); border-color: rgba(0,208,132,0.2); }
+.service-card:hover::before { opacity: 1; }
+.service-icon {
+  width: 56px; height: 56px;
+  background: linear-gradient(135deg, rgba(0,208,132,0.12), rgba(37,99,235,0.08));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 24px;
+  transition: var(--transition);
+}
+.service-card:hover .service-icon { transform: scale(1.1) rotate(-3deg); background: linear-gradient(135deg, rgba(0,208,132,0.2), rgba(37,99,235,0.15)); }
+.service-card h3 { font-size: 20px; margin-bottom: 12px; }
+.service-card p { font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+.service-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+.service-link:hover { gap: 10px; }
+.service-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.tag {
+  padding: 4px 10px;
+  background: var(--light-gray);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mid-gray);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== CASE STUDIES ===== */
+.case-studies { background: var(--body-bg); }
+.cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.case-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
+}
+.case-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); }
+.case-visual {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.case-card:nth-child(1) .case-visual { background: linear-gradient(135deg, #0F172A, #1E3A8A); }
+.case-card:nth-child(2) .case-visual { background: linear-gradient(135deg, #064E3B, #065F46); }
+.case-card:nth-child(3) .case-visual { background: linear-gradient(135deg, #1E1B4B, #3730A3); }
+.case-card:nth-child(4) .case-visual { background: linear-gradient(135deg, #451A03, #92400E); }
+.case-result-badge {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: rgba(0,208,132,0.15);
+  border: 1px solid rgba(0,208,132,0.3);
+  backdrop-filter: blur(10px);
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--green);
+}
+.case-logo-placeholder {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+.case-content { padding: 28px; }
+.case-industry {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 8px;
+}
+.case-content h3 { font-size: 18px; margin-bottom: 10px; }
+.case-content p { font-size: 14px; margin-bottom: 20px; }
+.case-metrics { display: flex; gap: 20px; margin-bottom: 20px; }
+.case-metric {}
+.case-metric-value {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--charcoal);
+  letter-spacing: -1px;
+}
+.case-metric-label { font-size: 11px; color: var(--mid-gray); font-weight: 500; }
+.btn-sm {
+  padding: 10px 20px;
+  font-size: 13px;
+  border-radius: 100px;
+}
+
+/* ===== INDUSTRIES ===== */
+.industries { background: var(--off-white); }
+.industries-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.industry-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-align: center;
+  transition: var(--transition);
+  cursor: none;
+  backdrop-filter: blur(20px);
+}
+.industry-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(0,208,132,0.3); }
+.industry-icon { font-size: 32px; margin-bottom: 16px; }
+.industry-card h4 { font-size: 16px; margin-bottom: 8px; }
+.industry-card p { font-size: 13px; color: var(--mid-gray); }
+
+/* ===== WHY US ===== */
+.why-us {
+  background: var(--charcoal);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+[data-theme="dark"] .why-us { background: #080E1C; }
+.why-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,208,132,0.06) 0%, transparent 70%),
+              radial-gradient(ellipse 40% 40% at 20% 30%, rgba(37,99,235,0.06) 0%, transparent 60%);
+}
+.why-us h2 { color: white; }
+.why-us .section-header p { color: rgba(255,255,255,0.6); }
+.why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.why-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.why-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,208,132,0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.why-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(0,208,132,0.2); }
+.why-card:hover::after { opacity: 1; }
+.why-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, rgba(0,208,132,0.15), rgba(37,99,235,0.1));
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.why-card h3 { color: white; font-size: 20px; margin-bottom: 12px; }
+.why-card p { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.7; }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials { background: var(--body-bg); overflow: hidden; }
+.testimonial-track {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.testimonial-wrapper { overflow: hidden; position: relative; }
+.testimonial-card {
+  min-width: 480px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-md);
+}
+.quote-mark {
+  font-size: 64px;
+  font-family: Georgia, serif;
+  color: var(--green);
+  opacity: 0.3;
+  line-height: 0.7;
+  margin-bottom: 16px;
+}
+.testimonial-card p { font-size: 16px; line-height: 1.7; margin-bottom: 28px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 14px; }
+.author-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+}
+.author-name { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px; color: var(--charcoal); }
+.author-role { font-size: 13px; color: var(--mid-gray); }
+.slider-controls { display: flex; gap: 12px; align-items: center; justify-content: center; margin-top: 40px; }
+.slider-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: none;
+  transition: var(--transition);
+  border: 1px solid var(--border);
+}
+.slider-dot.active { background: var(--green); width: 24px; border-radius: 4px; }
+.slider-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: none;
+  transition: var(--transition);
+  font-size: 16px;
+}
+.slider-btn:hover { background: var(--green); color: white; border-color: var(--green); transform: scale(1.1); }
+
+/* ===== INSIGHTS ===== */
+.insights { background: var(--off-white); }
+.insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.insight-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
+}
+.insight-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); }
+.insight-visual {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.insight-card:nth-child(1) .insight-visual { background: linear-gradient(135deg, #F0FDF4, #DCFCE7); }
+.insight-card:nth-child(2) .insight-visual { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); }
+.insight-card:nth-child(3) .insight-visual { background: linear-gradient(135deg, #FFF7ED, #FED7AA); }
+[data-theme="dark"] .insight-card:nth-child(1) .insight-visual { background: linear-gradient(135deg, #052e16, #14532d); }
+[data-theme="dark"] .insight-card:nth-child(2) .insight-visual { background: linear-gradient(135deg, #0c1a3a, #1e3a8a); }
+[data-theme="dark"] .insight-card:nth-child(3) .insight-visual { background: linear-gradient(135deg, #431407, #7c2d12); }
+.insight-content { padding: 24px; }
+.insight-category {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 10px;
+}
+.insight-card h3 { font-size: 17px; margin-bottom: 10px; line-height: 1.4; }
+.insight-card p { font-size: 13px; margin-bottom: 16px; }
+.insight-meta { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--mid-gray); font-weight: 500; }
+.read-time { display: flex; align-items: center; gap: 4px; }
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 50%, #0F172A 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+}
+.cta-orb-1 { width: 400px; height: 400px; background: var(--green); top: -100px; left: -100px; }
+.cta-orb-2 { width: 400px; height: 400px; background: var(--blue); bottom: -100px; right: -100px; }
+.cta-section h2 { color: white; margin-bottom: 20px; position: relative; z-index: 1; }
+.cta-section p { color: rgba(255,255,255,0.6); font-size: 18px; margin-bottom: 48px; position: relative; z-index: 1; max-width: 500px; margin-left: auto; margin-right: auto; }
+.cta-section p + p { margin-top: -32px; }
+.cta-features {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+}
+.cta-feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+}
+.cta-check { color: var(--green); font-weight: 700; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: #080E1C;
+  color: rgba(255,255,255,0.6);
+  padding: 80px 0 40px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+  gap: 48px;
+  padding-bottom: 64px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.footer-brand .logo { color: white; margin-bottom: 16px; }
+.footer-brand p { font-size: 14px; line-height: 1.7; max-width: 280px; margin-bottom: 24px; }
+.footer-socials { display: flex; gap: 12px; }
+.social-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: none;
+  transition: var(--transition);
+  color: rgba(255,255,255,0.6);
+}
+.social-btn:hover { background: var(--green); border-color: var(--green); color: white; transform: translateY(-3px); }
+.footer-col h5 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  transition: var(--transition);
+}
+.footer-col ul li a:hover { color: var(--green); padding-left: 4px; }
+.newsletter-form { display: flex; gap: 8px; margin-top: 16px; }
+.newsletter-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 12px 18px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: var(--transition);
+  font-family: 'Inter', sans-serif;
+}
+.newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
+.newsletter-input:focus { border-color: rgba(0,208,132,0.5); background: rgba(0,208,132,0.05); }
+.btn-xs { padding: 12px 18px; font-size: 13px; }
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 32px;
+  font-size: 13px;
+}
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: rgba(255,255,255,0.4); transition: var(--transition); }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+/* ===== ANIMATIONS ===== */
+.fade-up {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up.delay-1 { transition-delay: 0.1s; }
+.fade-up.delay-2 { transition-delay: 0.2s; }
+.fade-up.delay-3 { transition-delay: 0.3s; }
+.fade-up.delay-4 { transition-delay: 0.4s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero-visual { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .cases-grid { grid-template-columns: 1fr; }
+  .industries-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-grid { grid-template-columns: 1fr; }
+  .insights-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  section { padding: 80px 0; }
+  nav { display: none; }
+  .nav-inner { padding: 16px 20px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .industries-grid { grid-template-columns: repeat(2, 1fr); }
+  .insights-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .cta-features { flex-direction: column; align-items: center; gap: 16px; }
+  .testimonial-card { min-width: 320px; padding: 28px; }
+  .cases-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div class="loader" id="loader">
+  <div class="loader-logo">Nexus<span>.</span></div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- DARK MODE TOGGLE -->
+<button class="dark-toggle" id="dark-toggle" title="Toggle dark mode">🌙</button>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-mark">N</div>
+      Nexus<span>.</span>
+    </div>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#case-studies">Case Studies</a>
+      <a href="#industries">Industries</a>
+      <a href="#why-us">About</a>
+      <a href="#insights">Insights</a>
+      <a href="#cta">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn btn-primary btn-sm">Get a Proposal <span class="arrow">→</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge fade-up visible">
+        <span class="dot"></span>
+        Trusted by 500+ Enterprise Brands Globally
+      </div>
+      <h1 class="fade-up visible delay-1">
+        We Engineer<br>
+        <span class="accent">Measurable</span><br>
+        Growth.
+      </h1>
+      <p class="fade-up visible delay-2">
+        Data-driven digital strategy that transforms marketing spend into revenue. 
+        Enterprise execution meets AI-powered precision — delivering results that scale.
+      </p>
+      <div class="hero-ctas fade-up visible delay-3">
+        <button class="btn btn-primary">Get Your Free Strategy <span class="arrow">→</span></button>
+        <button class="btn btn-secondary">View Case Studies</button>
+      </div>
+      <div class="hero-trust fade-up visible delay-4">
+        <span class="trust-label">Trusted by</span>
+        <div class="trust-logos">
+          <span class="trust-logo">Salesforce</span>
+          <span class="trust-logo">HubSpot</span>
+          <span class="trust-logo">Shopify</span>
+          <span class="trust-logo">Stripe</span>
+          <span class="trust-logo">Figma</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Dashboard -->
+  <div class="hero-visual">
+    <div class="hero-dashboard">
+      <div class="dash-header">
+        <div class="dash-title">Revenue Dashboard</div>
+        <div class="dash-badge">↑ Live</div>
+      </div>
+      <div class="dash-stats">
+        <div class="dash-stat">
+          <div class="dash-stat-value" id="d1">$0</div>
+          <div class="dash-stat-label">Revenue Generated</div>
+          <div class="dash-stat-change">+127% YoY</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-value" id="d2">0%</div>
+          <div class="dash-stat-label">Avg. ROI</div>
+          <div class="dash-stat-change">+48% QoQ</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-value" id="d3">0</div>
+          <div class="dash-stat-label">Leads Generated</div>
+          <div class="dash-stat-change">+89% MoM</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-value" id="d4">0%</div>
+          <div class="dash-stat-label">Conversion Rate</div>
+          <div class="dash-stat-change">+12pts</div>
+        </div>
+      </div>
+      <div class="dash-chart">
+        <div class="chart-bars" id="chart-bars"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<div class="social-proof">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-up">
+        <div class="stat-number"><span class="counter" data-target="500">0</span><span class="unit">+</span></div>
+        <div class="stat-desc">Enterprise Clients</div>
+      </div>
+      <div class="stat-item fade-up delay-1">
+        <div class="stat-number"><span class="counter" data-target="300">0</span><span class="unit">%</span></div>
+        <div class="stat-desc">Average ROI Delivered</div>
+      </div>
+      <div class="stat-item fade-up delay-2">
+        <div class="stat-number"><span class="unit">$</span><span class="counter" data-target="10">0</span><span class="unit">B+</span></div>
+        <div class="stat-desc">Client Revenue Generated</div>
+      </div>
+      <div class="stat-item fade-up delay-3">
+        <div class="stat-number"><span class="counter" data-target="98">0</span><span class="unit">%</span></div>
+        <div class="stat-desc">Client Retention Rate</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="label">Our Services</span>
+      <h2>Full-Funnel Digital Intelligence</h2>
+      <p>From strategy to execution, we architect growth systems that compound. Every channel. Every touchpoint. Every dollar optimized.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up">
+        <div class="service-icon">🎯</div>
+        <h3>Performance Marketing</h3>
+        <p>Precision-targeted paid media across Google, Meta, LinkedIn, and programmatic channels. We scale what works and eliminate what doesn't — continuously.</p>
+        <div class="service-tags">
+          <span class="tag">PPC</span>
+          <span class="tag">Paid Social</span>
+          <span class="tag">Programmatic</span>
+        </div>
+        <a href="#" class="service-link">Explore service <span class="arrow">→</span></a>
+      </div>
+      <div class="service-card fade-up delay-1">
+        <div class="service-icon">📈</div>
+        <h3>SEO & Content Strategy</h3>
+        <p>Enterprise-grade technical SEO combined with data-driven content that dominates SERPs. We build organic growth systems, not just rankings.</p>
+        <div class="service-tags">
+          <span class="tag">Technical SEO</span>
+          <span class="tag">Content</span>
+          <span class="tag">Link Building</span>
+        </div>
+        <a href="#" class="service-link">Explore service <span class="arrow">→</span></a>
+      </div>
+      <div class="service-card fade-up delay-2">
+        <div class="service-icon">🤖</div>
+        <h3>AI-Powered Analytics</h3>
+        <p>Predictive intelligence and machine learning models that surface insights before competitors act. Real-time dashboards with actionable recommendations.</p>
+        <div class="service-tags">
+          <span class="tag">ML Models</span>
+          <span class="tag">BI</span>
+          <span class="tag">Attribution</span>
+        </div>
+        <a href="#" class="service-link">Explore service <span class="arrow">→</span></a>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-icon">⚡</div>
+        <h3>Conversion Rate Optimization</h3>
+        <p>Scientific A/B testing, UX optimization, and behavioral analytics to convert more of your existing traffic. Every pixel earns its place.</p>
+        <div class="service-tags">
+          <span class="tag">A/B Testing</span>
+          <span class="tag">UX Audit</span>
+          <span class="tag">Heatmaps</span>
+        </div>
+        <a href="#" class="service-link">Explore service <span class="arrow">→</span></a>
+      </div>
+      <div class="service-card fade-up delay-1">
+        <div class="service-icon">✉️</div>
+        <h3>Marketing Automation</h3>
+        <p>Sophisticated lifecycle marketing and CRM orchestration that nurtures leads through personalized journeys at enterprise scale.</p>
+        <div class="service-tags">
+          <span class="tag">Email</span>
+          <span class="tag">CRM</span>
+          <span class="tag">Lifecycle</span>
+        </div>
+        <a href="#" class="service-link">Explore service <span class="arrow">→</span></a>
+      </div>
+      <div class="service-card fade-up delay-2">
+        <div class="service-icon">🌐</div>
+        <h3>Brand & Creative</h3>
+        <p>Performance-led creative strategy that converts at scale. From brand architecture to high-converting ad creative — designed with data.</p>
+        <div class="service-tags">
+          <span class="tag">Brand Strategy</span>
+          <span class="tag">Creative</span>
+          <span class="tag">Video</span>
+        </div>
+        <a href="#" class="service-link">Explore service <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="case-studies" id="case-studies">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="label">Case Studies</span>
+      <h2>Results That Speak for Themselves</h2>
+      <p>Measurable impact across every engagement. These aren't vanity metrics — they're the numbers that move businesses forward.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card fade-up">
+        <div class="case-visual">
+          <div class="case-logo-placeholder">TechFlow</div>
+          <div class="case-result-badge">+320% Traffic</div>
+        </div>
+        <div class="case-content">
+          <div class="case-industry">SaaS • B2B</div>
+          <h3>How TechFlow Scaled from $2M to $18M ARR in 18 Months</h3>
+          <p>Complete digital transformation combining enterprise SEO, performance PPC, and AI-driven personalization.</p>
+          <div class="case-metrics">
+            <div class="case-metric">
+              <div class="case-metric-value">9×</div>
+              <div class="case-metric-label">Revenue Growth</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">-62%</div>
+              <div class="case-metric-label">CAC Reduction</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">320%</div>
+              <div class="case-metric-label">Organic Growth</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm">View Full Case Study <span class="arrow">→</span></button>
+        </div>
+      </div>
+      <div class="case-card fade-up delay-1">
+        <div class="case-visual">
+          <div class="case-logo-placeholder">GreenLeaf</div>
+          <div class="case-result-badge">2.8× ROAS</div>
+        </div>
+        <div class="case-content">
+          <div class="case-industry">E-Commerce • D2C</div>
+          <h3>GreenLeaf Achieves 2.8× ROAS Across 12 Markets Simultaneously</h3>
+          <p>Multi-market paid media strategy with localized creative optimization and real-time bidding intelligence.</p>
+          <div class="case-metrics">
+            <div class="case-metric">
+              <div class="case-metric-value">2.8×</div>
+              <div class="case-metric-label">ROAS</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">+185%</div>
+              <div class="case-metric-label">Revenue</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">12</div>
+              <div class="case-metric-label">Markets</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm">View Full Case Study <span class="arrow">→</span></button>
+        </div>
+      </div>
+      <div class="case-card fade-up">
+        <div class="case-visual">
+          <div class="case-logo-placeholder">Meridian</div>
+          <div class="case-result-badge">+540% Leads</div>
+        </div>
+        <div class="case-content">
+          <div class="case-industry">Financial Services • Enterprise</div>
+          <h3>Meridian Capital Generates 540% More Qualified Leads with ABM</h3>
+          <p>Account-based marketing combined with LinkedIn automation and precision content syndication.</p>
+          <div class="case-metrics">
+            <div class="case-metric">
+              <div class="case-metric-value">540%</div>
+              <div class="case-metric-label">Lead Growth</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">+$40M</div>
+              <div class="case-metric-label">Pipeline Value</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">34%</div>
+              <div class="case-metric-label">Close Rate</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm">View Full Case Study <span class="arrow">→</span></button>
+        </div>
+      </div>
+      <div class="case-card fade-up delay-1">
+        <div class="case-visual">
+          <div class="case-logo-placeholder">Apex</div>
+          <div class="case-result-badge">+248% CVR</div>
+        </div>
+        <div class="case-content">
+          <div class="case-industry">Retail • Omnichannel</div>
+          <h3>Apex Retail Doubles Conversion Rate Through CRO Transformation</h3>
+          <p>Systematic conversion optimization across 400+ landing pages using behavioral data and predictive testing.</p>
+          <div class="case-metrics">
+            <div class="case-metric">
+              <div class="case-metric-value">248%</div>
+              <div class="case-metric-label">CVR Increase</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">+$8.2M</div>
+              <div class="case-metric-label">Annual Revenue</div>
+            </div>
+            <div class="case-metric">
+              <div class="case-metric-value">-41%</div>
+              <div class="case-metric-label">Bounce Rate</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm">View Full Case Study <span class="arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries" id="industries">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="label">Industries</span>
+      <h2>Built for Your Sector</h2>
+      <p>Deep vertical expertise means we understand your competitive landscape, compliance requirements, and customer psychology before day one.</p>
+    </div>
+    <div class="industries-grid">
+      <div class="industry-card fade-up">
+        <div class="industry-icon">💻</div>
+        <h4>SaaS & Technology</h4>
+        <p>PLG strategies, trial conversion, and MRR growth</p>
+      </div>
+      <div class="industry-card fade-up delay-1">
+        <div class="industry-icon">🏦</div>
+        <h4>Financial Services</h4>
+        <p>Compliant lead generation and trust-driven content</p>
+      </div>
+      <div class="industry-card fade-up delay-2">
+        <div class="industry-icon">🏥</div>
+        <h4>Healthcare</h4>
+        <p>HIPAA-compliant digital patient acquisition</p>
+      </div>
+      <div class="industry-card fade-up delay-3">
+        <div class="industry-icon">🛍️</div>
+        <h4>E-Commerce</h4>
+        <p>Full-funnel DTC growth and retention systems</p>
+      </div>
+      <div class="industry-card fade-up">
+        <div class="industry-icon">🏗️</div>
+        <h4>Real Estate</h4>
+        <p>High-value lead generation and local dominance</p>
+      </div>
+      <div class="industry-card fade-up delay-1">
+        <div class="industry-icon">🎓</div>
+        <h4>Education</h4>
+        <p>Enrollment optimization and lifetime value growth</p>
+      </div>
+      <div class="industry-card fade-up delay-2">
+        <div class="industry-icon">⚙️</div>
+        <h4>Manufacturing</h4>
+        <p>B2B demand generation and distribution channels</p>
+      </div>
+      <div class="industry-card fade-up delay-3">
+        <div class="industry-icon">🚀</div>
+        <h4>Startups</h4>
+        <p>Rapid growth frameworks and PMF acceleration</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us" id="why-us">
+  <div class="why-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-header fade-up" style="margin-bottom:64px;">
+      <span class="label">Why Nexus</span>
+      <h2>The Nexus Difference</h2>
+      <p>We don't run campaigns. We build growth infrastructure that compounds over time.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card fade-up">
+        <div class="why-icon">🧠</div>
+        <h3>AI-Powered Optimization</h3>
+        <p>Proprietary machine learning models analyze millions of data points daily to surface opportunities your competitors will miss. We act on signals before they become trends.</p>
+      </div>
+      <div class="why-card fade-up delay-1">
+        <div class="why-icon">📊</div>
+        <h3>Transparent Reporting</h3>
+        <p>Real-time executive dashboards with no vanity metrics. Every report connects marketing activity to pipeline and revenue — the numbers your board cares about.</p>
+      </div>
+      <div class="why-card fade-up delay-2">
+        <div class="why-icon">🏆</div>
+        <h3>Enterprise Execution</h3>
+        <p>Senior strategists on every account. No junior handoffs, no account-switching. The team that sold you the strategy is the team that executes it.</p>
+      </div>
+      <div class="why-card fade-up delay-3">
+        <div class="why-icon">⚡</div>
+        <h3>Speed to Impact</h3>
+        <p>Rapid deployment frameworks built from 500+ campaigns. We compress learning cycles and deploy proven playbooks customized to your market in weeks, not quarters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="label">Testimonials</span>
+      <h2>What Our Clients Say</h2>
+      <p>Don't take our word for it. Here's what leaders at fast-growing companies experience working with Nexus.</p>
+    </div>
+    <div class="testimonial-wrapper fade-up">
+      <div class="testimonial-track" id="testimonial-track">
+        <div class="testimonial-card">
+          <div class="quote-mark">"</div>
+          <p>Nexus transformed how we think about digital growth. In 12 months they took us from 40 inbound leads a month to over 400. The strategy was brilliant, execution was flawless.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SC</div>
+            <div>
+              <div class="author-name">Sarah Chen</div>
+              <div class="author-role">CMO, TechFlow Inc.</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="quote-mark">"</div>
+          <p>The ROI we've seen is unlike anything from previous agencies. They understand enterprise complexity and move with the urgency of a startup. Exactly what we needed.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">MR</div>
+            <div>
+              <div class="author-name">Marcus Reid</div>
+              <div class="author-role">VP Growth, Meridian Capital</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="quote-mark">"</div>
+          <p>We went from $2M to $18M ARR in 18 months. Nexus built growth systems that compound — every month we see returns on work they did a year ago. That's rare.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AL</div>
+            <div>
+              <div class="author-name">Alicia Laurent</div>
+              <div class="author-role">CEO, GreenLeaf Commerce</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="quote-mark">"</div>
+          <p>Finally, an agency that speaks the language of revenue, not reach. Our board looks at the Nexus dashboard in every QBR. The reporting clarity alone is worth the investment.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">DK</div>
+            <div>
+              <div class="author-name">David Kim</div>
+              <div class="author-role">CFO, Apex Retail Group</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button class="slider-btn" id="prev-btn">←</button>
+      <div class="slider-dot active" data-idx="0"></div>
+      <div class="slider-dot" data-idx="1"></div>
+      <div class="slider-dot" data-idx="2"></div>
+      <div class="slider-dot" data-idx="3"></div>
+      <button class="slider-btn" id="next-btn">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHTS -->
+<section class="insights" id="insights">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="label">Insights</span>
+      <h2>Thought Leadership</h2>
+      <p>Intelligence from the frontlines of enterprise digital growth. Research-backed, practitioner-written, immediately actionable.</p>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-card fade-up">
+        <div class="insight-visual">📊</div>
+        <div class="insight-content">
+          <div class="insight-category">AI & Analytics</div>
+          <h3>How AI Attribution is Rewriting the Rules of Marketing ROI in 2025</h3>
+          <p>Multi-touch attribution models are dead. Here's what enterprise teams are using instead — and why it changes everything about budget allocation.</p>
+          <div class="insight-meta">
+            <span class="read-time">⏱ 8 min read</span>
+            <span>Feb 2025</span>
+          </div>
+        </div>
+      </div>
+      <div class="insight-card fade-up delay-1">
+        <div class="insight-visual">🎯</div>
+        <div class="insight-content">
+          <div class="insight-category">Paid Media</div>
+          <h3>The B2B Performance Marketing Playbook for 3× ROAS at Scale</h3>
+          <p>We analyzed 200+ enterprise campaigns to identify the exact frameworks that separate 2× ROAS from 6×. The findings challenged our own assumptions.</p>
+          <div class="insight-meta">
+            <span class="read-time">⏱ 12 min read</span>
+            <span>Jan 2025</span>
+          </div>
+        </div>
+      </div>
+      <div class="insight-card fade-up delay-2">
+        <div class="insight-visual">🔮</div>
+        <div class="insight-content">
+          <div class="insight-category">Strategy</div>
+          <h3>2025 State of Enterprise Digital Marketing: The Data-Backed Report</h3>
+          <p>Survey of 1,200 enterprise marketing leaders reveals the channels, technologies, and approaches generating the highest returns this year.</p>
+          <div class="insight-meta">
+            <span class="read-time">⏱ 20 min read</span>
+            <span>Dec 2024</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-orb cta-orb-1"></div>
+  <div class="cta-orb cta-orb-2"></div>
+  <div class="container" style="text-align:center; position:relative; z-index:1;">
+    <span class="label fade-up" style="color:var(--green);">Ready to Grow?</span>
+    <h2 class="fade-up" style="color:white; margin-top:16px; margin-bottom:24px;">
+      Let's Build Your<br>Growth Engine
+    </h2>
+    <p class="fade-up" style="color:rgba(255,255,255,0.6); font-size:18px; margin-bottom:48px; max-width:500px; margin-left:auto; margin-right:auto;">
+      Join 500+ enterprise brands generating measurable, compounding returns with Nexus.
+    </p>
+    <div class="cta-features fade-up">
+      <div class="cta-feature"><span class="cta-check">✓</span> Free strategy audit</div>
+      <div class="cta-feature"><span class="cta-check">✓</span> No long-term lock-in</div>
+      <div class="cta-feature"><span class="cta-check">✓</span> Results in 90 days</div>
+      <div class="cta-feature"><span class="cta-check">✓</span> Senior team, every account</div>
+    </div>
+    <button class="btn btn-primary fade-up" style="font-size:17px; padding:20px 48px;">
+      Get Your Free Strategy Session <span class="arrow">→</span>
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-mark">N</div>
+          Nexus<span style="color:var(--green)">.</span>
+        </div>
+        <p style="margin-top:16px;">Enterprise growth intelligence. Data-driven strategy that transforms marketing spend into measurable, compounding revenue.</p>
+        <div class="footer-socials">
+          <div class="social-btn">in</div>
+          <div class="social-btn">𝕏</div>
+          <div class="social-btn">f</div>
+          <div class="social-btn">▶</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#">Performance Marketing</a></li>
+          <li><a href="#">SEO & Content</a></li>
+          <li><a href="#">AI Analytics</a></li>
+          <li><a href="#">CRO</a></li>
+          <li><a href="#">Marketing Automation</a></li>
+          <li><a href="#">Brand & Creative</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Nexus</a></li>
+          <li><a href="#">Our Team</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Blog & Insights</a></li>
+          <li><a href="#">Guides & Reports</a></li>
+          <li><a href="#">Webinars</a></li>
+          <li><a href="#">ROI Calculator</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Get the Intelligence</h5>
+        <p style="font-size:13px; margin-bottom:0;">Weekly growth insights, industry reports, and exclusive data delivered to your inbox.</p>
+        <div class="newsletter-form">
+          <input type="email" class="newsletter-input" placeholder="your@email.com">
+          <button class="btn btn-primary btn-xs">→</button>
+        </div>
+        <p style="font-size:12px; margin-top:12px; color:rgba(255,255,255,0.3);">No spam. Unsubscribe anytime.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p style="font-size:13px; color:rgba(255,255,255,0.3);">© 2025 Nexus Digital. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ===== LOADER =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2000);
+});
+
+// ===== CURSOR =====
+const cursor = document.getElementById('cursor');
+const follower = document.getElementById('cursor-follower');
+let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+});
+
+function animateFollower() {
+  followerX += (mouseX - followerX) * 0.12;
+  followerY += (mouseY - followerY) * 0.12;
+  follower.style.left = followerX + 'px';
+  follower.style.top = followerY + 'px';
+  requestAnimationFrame(animateFollower);
+}
+animateFollower();
+
+document.querySelectorAll('a, button, .service-card, .case-card, .industry-card, .insight-card, .testimonial-card, .slider-btn, .slider-dot, .social-btn, .dark-toggle').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); follower.classList.add('hover'); });
+  el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); follower.classList.remove('hover'); });
+});
+
+// ===== SCROLL PROGRESS =====
+const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+  
+  // Sticky header
+  const header = document.getElementById('header');
+  header.classList.toggle('scrolled', scrollTop > 20);
+});
+
+// ===== DARK MODE =====
+const toggle = document.getElementById('dark-toggle');
+toggle.addEventListener('click', () => {
+  const html = document.documentElement;
+  if (html.dataset.theme === 'dark') {
+    html.dataset.theme = 'light';
+    toggle.textContent = '🌙';
+  } else {
+    html.dataset.theme = 'dark';
+    toggle.textContent = '☀️';
+  }
+});
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ===== COUNTER ANIMATIONS =====
+function animateCounter(el, target, suffix = '', prefix = '') {
+  let current = 0;
+  const duration = 2000;
+  const steps = 60;
+  const increment = target / steps;
+  const interval = duration / steps;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) {
+      current = target;
+      clearInterval(timer);
+    }
+    el.textContent = prefix + Math.floor(current) + suffix;
+  }, interval);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      animateCounter(el, target);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+// ===== HERO DASHBOARD ANIMATIONS =====
+function animateDashStat(id, target, prefix = '', suffix = '') {
+  let current = 0;
+  const inc = target / 60;
+  const timer = setInterval(() => {
+    current = Math.min(current + inc, target);
+    let val = Math.floor(current);
+    document.getElementById(id).textContent = prefix + val + suffix;
+    if (current >= target) clearInterval(timer);
+  }, 25);
+}
+
+setTimeout(() => {
+  animateDashStat('d1', 24, '$', 'M');
+  animateDashStat('d2', 312, '', '%');
+  animateDashStat('d3', 8420, '', '');
+  animateDashStat('d4', 8, '', '.4%');
+}, 2200);
+
+// Chart bars
+const barsContainer = document.getElementById('chart-bars');
+const barHeights = [30, 45, 60, 40, 70, 55, 80, 65, 90, 75, 100, 85];
+barHeights.forEach((h, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'chart-bar';
+  bar.style.height = h + '%';
+  bar.style.animationDelay = (i * 0.05) + 's';
+  barsContainer.appendChild(bar);
+});
+
+// ===== TESTIMONIAL SLIDER =====
+let currentSlide = 0;
+const track = document.getElementById('testimonial-track');
+const dots = document.querySelectorAll('.slider-dot');
+const cards = document.querySelectorAll('.testimonial-card');
+const cardWidth = 480 + 24;
+
+function goToSlide(idx) {
+  currentSlide = Math.max(0, Math.min(idx, cards.length - 1));
+  track.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+}
+
+document.getElementById('next-btn').addEventListener('click', () => goToSlide(currentSlide + 1));
+document.getElementById('prev-btn').addEventListener('click', () => goToSlide(currentSlide - 1));
+dots.forEach(dot => dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.idx))));
+
+// Auto slide
+setInterval(() => goToSlide((currentSlide + 1) % cards.length), 5000);
+
+// ===== MAGNETIC BUTTONS =====
+document.querySelectorAll('.btn-primary').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    btn.style.transform = `translateY(-3px) translate(${x * 0.15}px, ${y * 0.15}px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+// ===== PARALLAX HERO =====
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const heroOrb1 = document.querySelector('.hero-orb-1');
+  const heroOrb2 = document.querySelector('.hero-orb-2');
+  if (heroOrb1) heroOrb1.style.transform = `translateY(${scrollY * 0.3}px)`;
+  if (heroOrb2) heroOrb2.style.transform = `translateY(${scrollY * -0.2}px)`;
+});
+
+// ===== MOBILE HAMBURGER (simplified) =====
+// Nav hidden on mobile, could add hamburger here
+</script>
+</body>
+</html>

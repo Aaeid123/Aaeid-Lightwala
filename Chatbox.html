@@ -1,0 +1,19 @@
+<!-- Add chatbot CSS -->
+<link rel="stylesheet" href="path/to/chatbot.css">
+
+<!-- Add chatbot container (optional, JS will create it) -->
+<div id="timestag-chatbot"></div>
+
+<!-- Add chatbot JS -->
+<script src="path/to/chatbot.js"></script>
+
+<!-- Initialize with custom config -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    window.timestagChatbot = new TimestagChatbot({
+      apiUrl: 'https://your-backend-url.com/api/chat', // Update with your backend URL
+      companyName: 'Timestag Digital Marketing',
+      welcomeMessage: 'Hello 👋 Welcome to Timestag Digital Marketing. How can I help you grow your business today?'
+    });
+  });
+</script>

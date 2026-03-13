@@ -1,0 +1,29 @@
+{
+  "name": "timestag-chatbot-backend",
+  "version": "1.0.0",
+  "description": "AI Chatbot for Timestag Digital Marketing Agency",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.0",
+    "openai": "^4.20.0",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4",
+    "nodemailer": "^6.9.7",
+    "axios": "^1.6.0",
+    "winston": "^3.11.0",
+    "moment": "^2.29.4",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
