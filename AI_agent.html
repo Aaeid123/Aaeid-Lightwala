@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TimesTag — New Generation of Digital World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+
+<style>
+/* ═══════════════════════════════════════════════════
+   ROOT TOKENS
+═══════════════════════════════════════════════════ */
+:root{
+  --navy:#05122b;
+  --navy2:#081a3d;
+  --blue:#0a2560;
+  --sky:#1560bd;
+  --cyan:#00b4d8;
+  --cyan2:#48cae4;
+  --gold:#f4a11d;
+  --gold2:#ffc14d;
+  --white:#f0f6ff;
+  --muted:#8ca0c0;
+  --border:rgba(0,180,216,0.18);
+  --card:rgba(8,26,61,0.85);
+  --glass:rgba(5,18,43,0.7);
+  --r:14px;
+  --bot-bg:#060f22;
+  --bot-card:#0b1930;
+  --bot-border:rgba(0,180,216,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--navy);
+  color:var(--white);
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--sky);border-radius:3px}
+
+/* ═══════════════════════════════════════════════════
+   NOISE + GRID BG
+═══════════════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 0%,rgba(0,180,216,.1),transparent),
+    radial-gradient(ellipse 60% 50% at 80% 100%,rgba(21,96,189,.12),transparent),
+    linear-gradient(rgba(0,180,216,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,180,216,.03) 1px,transparent 1px);
+  background-size:100% 100%,100% 100%,50px 50px,50px 50px;
+}
+
+/* ═══════════════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 2.5rem;
+  background:rgba(5,18,43,.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+nav.scrolled{padding:.65rem 2.5rem;background:rgba(5,18,43,.97)}
+.nav-logo{display:flex;align-items:center;gap:.75rem}
+.nav-logo img{height:48px;filter:drop-shadow(0 2px 8px rgba(0,180,216,.4))}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo-text .brand{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.25rem;
+  letter-spacing:.05em;color:var(--white);
+}
+.nav-logo-text .tagline{font-size:.58rem;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{
+  font-size:.82rem;font-weight:500;color:var(--white);opacity:.65;
+  text-decoration:none;letter-spacing:.03em;transition:all .2s;
+  position:relative;padding-bottom:3px;
+}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--cyan);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+.nav-links a:hover{opacity:1;color:var(--cyan)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-right{display:flex;gap:.75rem;align-items:center}
+.nav-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.45rem 1.1rem;border-radius:40px;font-size:.78rem;font-weight:600;
+  text-decoration:none;transition:all .25s;cursor:pointer;border:none;
+}
+.nav-btn.outline{background:transparent;border:1px solid var(--border);color:var(--cyan)}
+.nav-btn.outline:hover{background:rgba(0,180,216,.1);border-color:var(--cyan)}
+.nav-btn.solid{background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff}
+.nav-btn.solid:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,180,216,.4)}
+/* pulsing AI dot */
+.ai-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:ai-pulse 1.8s ease-in-out infinite}
+@keyframes ai-pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem}
+.hamburger span{width:22px;height:2px;background:var(--white);border-radius:2px;display:block;transition:all .3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-menu{
+  display:none;position:fixed;inset:0;z-index:850;
+  background:rgba(5,18,43,.98);flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--white);text-decoration:none;opacity:.7;transition:all .2s}
+.mob-menu a:hover{opacity:1;color:var(--cyan)}
+
+/* ═══════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:7rem 2.5rem 5rem;position:relative;overflow:hidden;
+}
+/* animated globe/orb */
+.hero-orb{
+  position:absolute;right:-120px;top:50%;transform:translateY(-50%);
+  width:620px;height:620px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(0,180,216,.22),rgba(21,96,189,.12),transparent 70%);
+  border:1px solid rgba(0,180,216,.12);
+  animation:orb-spin 30s linear infinite;
+}
+.hero-orb::before{
+  content:'';position:absolute;inset:20px;border-radius:50%;
+  border:1px dashed rgba(0,180,216,.1);
+  animation:orb-spin 20s linear infinite reverse;
+}
+.hero-orb::after{
+  content:'';position:absolute;inset:60px;border-radius:50%;
+  border:1px solid rgba(0,180,216,.08);
+  animation:orb-spin 15s linear infinite;
+}
+@keyframes orb-spin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
+/* floating particles */
+.particle{position:absolute;border-radius:50%;pointer-events:none;animation:float-p 8s ease-in-out infinite}
+@keyframes float-p{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-24px) rotate(180deg)}}
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(0,180,216,.08);border:1px solid var(--border);
+  padding:.38rem 1rem;border-radius:40px;
+  font-size:.7rem;font-weight:600;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.75rem;
+}
+.hero-badge .live{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:ai-pulse 2s ease-in-out infinite}
+h1{font-family:'Rajdhani',sans-serif;font-size:clamp(2.8rem,6vw,5.2rem);font-weight:700;line-height:.97;letter-spacing:-.01em;margin-bottom:1.5rem}
+h1 .accent{color:var(--cyan)}
+h1 .gold{color:var(--gold)}
+.hero-desc{font-size:1rem;font-weight:300;line-height:1.8;opacity:.65;max-width:480px;margin-bottom:2.25rem}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  color:#fff;padding:.82rem 1.75rem;border-radius:40px;
+  font-weight:600;font-size:.88rem;border:none;cursor:pointer;text-decoration:none;
+  transition:all .25s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,180,216,.4)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:transparent;color:var(--white);
+  padding:.82rem 1.75rem;border-radius:40px;
+  font-weight:600;font-size:.88rem;
+  border:1px solid rgba(255,255,255,.15);cursor:pointer;transition:all .25s;
+}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-stats{display:flex;gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.hs-val{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--cyan)}
+.hs-lbl{font-size:.68rem;opacity:.45;text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem}
+/* hero right card */
+.hero-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:1.75rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  animation:float-card 5s ease-in-out infinite;
+}
+@keyframes float-card{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hc-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
+.hc-av{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.hc-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem}
+.hc-sub{font-size:.68rem;opacity:.45;margin-top:.1rem}
+.hc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.hc-metric{background:rgba(0,180,216,.06);border:1px solid var(--border);border-radius:10px;padding:.85rem}
+.hc-m-val{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cyan)}
+.hc-m-lbl{font-size:.65rem;opacity:.45;text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem}
+.hc-bar-label{font-size:.7rem;opacity:.5;margin-bottom:.4rem;display:flex;justify-content:space-between}
+.hc-bar-bg{height:6px;background:rgba(255,255,255,.06);border-radius:3px}
+.hc-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),var(--cyan))}
+.hc-services{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.25rem}
+.hc-tag{
+  font-size:.65rem;font-weight:600;padding:.28rem .7rem;border-radius:40px;
+  background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.2);color:var(--cyan);
+}
+
+/* ═══════════════════════════════════════════════════
+   TICKER
+═══════════════════════════════════════════════════ */
+.ticker-wrap{overflow:hidden;background:linear-gradient(135deg,var(--sky),var(--blue));padding:.75rem 0;position:relative;z-index:2}
+.ticker-track{display:flex;gap:3rem;animation:ticker 28s linear infinite;width:max-content}
+.ticker-item{display:flex;align-items:center;gap:.6rem;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:#fff}
+.ticker-sep{opacity:.4;font-size:1rem}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════════════════════════
+   SHARED SECTION STYLES
+═══════════════════════════════════════════════════ */
+.section{padding:6.5rem 2.5rem;max-width:1200px;margin:0 auto;position:relative;z-index:2}
+.section-divider{height:1px;background:var(--border);margin:0 2.5rem;opacity:.5}
+.sec-label{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:1rem;
+}
+.sec-label::before{content:'';width:20px;height:1.5px;background:var(--cyan);display:block}
+.sec-title{
+  font-family:'Rajdhani',sans-serif;font-size:clamp(1.9rem,4vw,3.1rem);
+  font-weight:700;line-height:1.05;letter-spacing:-.01em;margin-bottom:1rem;
+}
+.sec-title .accent{color:var(--cyan)}
+.sec-title .gold{color:var(--gold)}
+.sec-sub{font-size:.9rem;opacity:.55;line-height:1.75;max-width:500px}
+/* fade-up */
+.fu{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ═══════════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════════ */
+.services-intro{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:3rem}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.svc{
+  background:var(--navy2);padding:2.25rem;position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.svc:hover{background:var(--blue)}
+.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sky),var(--cyan));opacity:0;transition:opacity .3s}
+.svc:hover::before{opacity:1}
+.svc-n{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;color:rgba(0,180,216,.08);line-height:1;margin-bottom:.75rem;transition:color .3s}
+.svc:hover .svc-n{color:rgba(0,180,216,.16)}
+.svc-ico{font-size:1.6rem;margin-bottom:1rem}
+.svc-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.svc-desc{font-size:.82rem;line-height:1.7;opacity:.5}
+.svc-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1rem}
+.chip{font-size:.62rem;font-weight:600;padding:.22rem .6rem;border-radius:40px;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.15);opacity:.7}
+.svc-price{margin-top:1.1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06);font-size:.72rem;color:var(--cyan);font-weight:600;display:flex;justify-content:space-between}
+.svc-arr{opacity:.3;transition:all .25s}
+.svc:hover .svc-arr{opacity:1;transform:translateX(4px)}
+
+/* ═══════════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════════ */
+.stats-band{
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  padding:3.5rem 2.5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;
+  position:relative;z-index:2;
+}
+.sb-item{text-align:center}
+.sb-val{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1}
+.sb-lbl{font-size:.72rem;font-weight:600;opacity:.65;text-transform:uppercase;letter-spacing:.08em;margin-top:.35rem}
+
+/* ═══════════════════════════════════════════════════
+   CASE STUDIES
+═══════════════════════════════════════════════════ */
+.cases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
+.case{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:2rem;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;
+}
+.case:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.case::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sky),var(--cyan))}
+.case-ind{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:.75rem}
+.case-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;margin-bottom:.65rem}
+.case-desc{font-size:.82rem;opacity:.5;line-height:1.7;margin-bottom:1.25rem}
+.case-nums{display:flex;gap:1.5rem}
+.cn-val{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--gold)}
+.cn-lbl{font-size:.62rem;opacity:.4;text-transform:uppercase;letter-spacing:.06em;margin-top:.15rem}
+
+/* ═══════════════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════════════ */
+.process-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:3rem}
+.process-steps{}
+.pstep{display:grid;grid-template-columns:52px 1fr;gap:1.1rem;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,.06);align-items:start;transition:all .25s}
+.pstep:hover .ps-num{color:var(--cyan)}
+.ps-num{font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;color:rgba(0,180,216,.2);line-height:1.1;transition:color .3s}
+.ps-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.35rem}
+.ps-desc{font-size:.8rem;opacity:.5;line-height:1.65}
+.process-visual{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem}
+.pv-head{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem}
+.pv-row{display:flex;align-items:center;gap:.9rem;padding:.65rem;border-radius:8px;margin-bottom:.4rem;transition:background .25s}
+.pv-row:hover{background:rgba(0,180,216,.06)}
+.pv-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.pv-lbl{font-size:.82rem;font-weight:600;min-width:80px}
+.pv-bar-w{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px}
+.pv-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),var(--cyan))}
+.pv-pct{font-size:.68rem;color:var(--cyan);font-weight:700;margin-left:.4rem}
+
+/* ═══════════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════════ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.tcard{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:1.85rem;transition:transform .3s,box-shadow .3s;
+}
+.tcard:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(0,0,0,.5)}
+.tcard-stars{color:var(--gold);font-size:.82rem;margin-bottom:.9rem}
+.tcard-q{font-size:.845rem;line-height:1.75;opacity:.65;font-style:italic;margin-bottom:1.25rem}
+.tcard-auth{display:flex;align-items:center;gap:.75rem}
+.tcard-av{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:var(--navy);
+}
+.tcard-name{font-weight:600;font-size:.845rem}
+.tcard-role{font-size:.7rem;opacity:.4;margin-top:.1rem}
+
+/* ═══════════════════════════════════════════════════
+   PRICING
+═══════════════════════════════════════════════════ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.pc{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:2.25rem;position:relative;transition:transform .3s;
+}
+.pc.feat{
+  background:linear-gradient(160deg,rgba(21,96,189,.3),var(--card));
+  border-color:var(--cyan);
+  box-shadow:0 0 0 1px rgba(0,180,216,.15),0 24px 60px rgba(0,0,0,.5);
+}
+.pc:hover{transform:translateY(-3px)}
+.pc-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff;
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.28rem .9rem;border-radius:40px;white-space:nowrap;
+}
+.pc-tier{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:.6rem}
+.pc-name{font-family:'Rajdhani',sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:.9rem}
+.pc-price{display:flex;align-items:flex-start;gap:.2rem;margin-bottom:1.35rem;padding-bottom:1.35rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.pc-curr{font-size:.9rem;font-weight:700;color:var(--cyan);margin-top:.4rem}
+.pc-num{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;line-height:1;color:var(--cyan)}
+.pc-per{font-size:.72rem;opacity:.4;align-self:flex-end;margin-bottom:.3rem}
+.pc-feats{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.75rem}
+.pf{display:flex;align-items:flex-start;gap:.55rem;font-size:.82rem;opacity:.7}
+.pf-ic{color:var(--cyan);flex-shrink:0;margin-top:.05rem;font-size:.75rem}
+.pc-btn{
+  display:block;text-align:center;padding:.75rem;border-radius:40px;
+  font-weight:700;font-size:.82rem;cursor:pointer;border:none;width:100%;transition:all .25s;text-decoration:none;
+}
+.pc-btn.out{background:transparent;border:1px solid var(--border);color:var(--white)}
+.pc-btn.out:hover{border-color:var(--cyan);color:var(--cyan)}
+.pc-btn.sol{background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff}
+.pc-btn.sol:hover{box-shadow:0 8px 24px rgba(0,180,216,.4)}
+
+/* ═══════════════════════════════════════════════════
+   CTA BAND
+═══════════════════════════════════════════════════ */
+.cta-section{
+  margin:0 2.5rem 5rem;
+  background:linear-gradient(135deg,rgba(10,37,96,.9),rgba(8,26,61,.95));
+  border:1px solid var(--border);border-radius:20px;padding:4.5rem 3rem;
+  text-align:center;position:relative;overflow:hidden;z-index:2;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(0,180,216,.12),transparent 55%);
+}
+.cta-title{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;margin-bottom:.85rem;position:relative}
+.cta-sub{opacity:.55;font-size:.95rem;margin-bottom:2.25rem;position:relative}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+footer{border-top:1px solid var(--border);padding:3rem 2.5rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;position:relative;z-index:2}
+.ft-brand img{height:44px;margin-bottom:.85rem;filter:drop-shadow(0 2px 6px rgba(0,180,216,.3))}
+.ft-brand p{font-size:.8rem;opacity:.4;line-height:1.75;max-width:240px}
+.ft-col h4{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem}
+.ft-col a{display:block;font-size:.8rem;opacity:.4;margin-bottom:.6rem;text-decoration:none;color:inherit;transition:opacity .2s}
+.ft-col a:hover{opacity:.9;color:var(--cyan)}
+.ft-btm{border-top:1px solid rgba(255,255,255,.06);padding:1.5rem 2.5rem;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;font-size:.73rem;opacity:.3;position:relative;z-index:2}
+
+/* ═══════════════════════════════════════════════════
+   ┌─────────────────────────────────────────────┐
+   │           NEXABOT — AI AGENT WIDGET         │
+   └─────────────────────────────────────────────┘
+═══════════════════════════════════════════════════ */
+#bot-launcher{
+  position:fixed;bottom:1.75rem;right:1.75rem;z-index:1000;
+  width:62px;height:62px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 36px rgba(0,180,216,.5);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+}
+#bot-launcher:hover{transform:scale(1.12);box-shadow:0 14px 48px rgba(0,180,216,.7)}
+#bot-launcher svg{width:26px;height:26px;color:#fff}
+.bot-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--cyan);animation:bot-ring 2.5s ease-out infinite;opacity:0}
+@keyframes bot-ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+.bot-badge{position:absolute;top:-1px;right:-1px;width:19px;height:19px;background:#ef4444;border-radius:50%;border:2px solid var(--navy);display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:800;color:#fff;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+
+/* bot panel */
+#bot-panel{
+  position:fixed;bottom:6.5rem;right:1.75rem;z-index:1000;
+  width:min(430px,calc(100vw - 2.5rem));
+  height:min(660px,calc(100vh - 9rem));
+  background:var(--bot-bg);border:1px solid var(--bot-border);border-radius:20px;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 28px 80px rgba(0,0,0,.8),0 0 0 1px rgba(0,180,216,.05);
+  transform:translateY(22px) scale(.95);opacity:0;pointer-events:none;
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1),opacity .26s ease;
+}
+#bot-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+
+/* bot header */
+.bot-hd{
+  padding:1.1rem 1.4rem;
+  background:linear-gradient(135deg,#0a1e42,#060f22);
+  border-bottom:1px solid var(--bot-border);
+  display:flex;align-items:center;gap:.85rem;flex-shrink:0;
+}
+.bot-av{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  position:relative;
+}
+.bot-online{
+  position:absolute;bottom:1px;right:1px;width:11px;height:11px;
+  background:#4ade80;border-radius:50%;border:2.5px solid var(--bot-bg);
+  animation:online 2s ease-in-out infinite;
+}
+@keyframes online{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 4px rgba(74,222,128,0)}}
+.bot-hd-info{flex:1}
+.bot-hd-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.02em}
+.bot-hd-sub{font-size:.66rem;opacity:.4;margin-top:1px}
+.bot-hd-btns{display:flex;gap:.45rem}
+.bot-icon-btn{
+  width:29px;height:29px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);font-size:.8rem;transition:background .2s;
+}
+.bot-icon-btn:hover{background:rgba(255,255,255,.14)}
+
+/* mode bar */
+.mode-bar{
+  display:flex;gap:.4rem;overflow-x:auto;padding:.65rem 1rem;
+  background:rgba(0,0,0,.25);border-bottom:1px solid var(--bot-border);
+  flex-shrink:0;scrollbar-width:none;
+}
+.mode-bar::-webkit-scrollbar{display:none}
+.mode-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.32rem .8rem;border-radius:40px;border:1px solid var(--bot-border);
+  background:transparent;color:var(--muted);font-size:.7rem;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Poppins',sans-serif;
+}
+.mode-btn.active,.mode-btn:hover{background:rgba(0,180,216,.12);border-color:var(--cyan);color:var(--cyan)}
+
+/* api bar */
+.api-strip{
+  padding:.6rem 1rem;background:rgba(0,180,216,.04);
+  border-bottom:1px solid var(--bot-border);
+  display:flex;gap:.5rem;align-items:center;flex-shrink:0;
+}
+.api-strip input{
+  flex:1;background:rgba(0,0,0,.3);border:1px solid var(--bot-border);
+  border-radius:8px;padding:.38rem .7rem;color:var(--white);
+  font-size:.7rem;font-family:'Poppins',sans-serif;outline:none;
+}
+.api-strip input:focus{border-color:rgba(0,180,216,.45)}
+.api-strip input::placeholder{opacity:.3;font-size:.68rem}
+.api-go{
+  background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff;
+  border:none;border-radius:8px;padding:.38rem .85rem;
+  font-size:.7rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;
+}
+.api-go:hover{box-shadow:0 4px 16px rgba(0,180,216,.4)}
+
+/* messages */
+#bot-msgs{
+  flex:1;overflow-y:auto;padding:1.1rem;
+  display:flex;flex-direction:column;gap:.85rem;scroll-behavior:smooth;
+}
+#bot-msgs::-webkit-scrollbar{width:3px}
+#bot-msgs::-webkit-scrollbar-thumb{background:var(--bot-border);border-radius:2px}
+.mrow{display:flex;align-items:flex-end;gap:.55rem}
+.mrow.user{flex-direction:row-reverse}
+.mav{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff;
+}
+.mbbl{
+  max-width:82%;padding:.78rem 1rem;border-radius:1.1rem;
+  font-size:.835rem;line-height:1.65;animation:bubble-in .24s ease;
+}
+@keyframes bubble-in{from{transform:translateY(7px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mbbl.ai{background:var(--bot-card);color:var(--white);border:1px solid var(--bot-border);border-bottom-left-radius:4px}
+.mbbl.user{background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff;font-weight:500;border-bottom-right-radius:4px}
+.mtime{font-size:.58rem;opacity:.25;align-self:flex-end;flex-shrink:0}
+
+/* typing */
+.trow{display:flex;align-items:center;gap:.55rem}
+.tbbl{background:var(--bot-card);border:1px solid var(--bot-border);border-radius:1.1rem;border-bottom-left-radius:4px;padding:.82rem 1rem;display:flex;gap:4px;align-items:center}
+.td{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:td-b 1.3s ease-in-out infinite;opacity:.6}
+.td:nth-child(2){animation-delay:.15s}.td:nth-child(3){animation-delay:.3s}
+@keyframes td-b{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px);opacity:1}}
+
+/* lead banner */
+.lead-bann{
+  background:linear-gradient(135deg,rgba(21,96,189,.2),rgba(0,180,216,.1));
+  border:1px solid rgba(0,180,216,.3);border-radius:10px;
+  padding:.85rem 1rem;font-size:.78rem;line-height:1.55;animation:bubble-in .4s ease;
+}
+.lead-bann strong{color:#4ade80}
+
+/* quick chips */
+.qchips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.7rem 1.1rem 0}
+.qchip{
+  background:rgba(0,180,216,.08);border:1px solid var(--bot-border);
+  border-radius:40px;padding:.35rem .82rem;font-size:.7rem;color:var(--cyan);
+  cursor:pointer;transition:all .2s;font-weight:600;white-space:nowrap;font-family:'Poppins',sans-serif;
+}
+.qchip:hover{background:rgba(0,180,216,.18);transform:translateY(-1px)}
+
+/* input */
+.bot-inp-area{
+  padding:.9rem 1.1rem;border-top:1px solid var(--bot-border);
+  background:rgba(6,15,34,.9);flex-shrink:0;
+}
+.bot-inp-row{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--bot-card);border:1px solid var(--bot-border);
+  border-radius:40px;padding:.45rem .45rem .45rem 1rem;transition:border-color .2s;
+}
+.bot-inp-row:focus-within{border-color:rgba(0,180,216,.45)}
+#bot-input{
+  flex:1;background:none;border:none;outline:none;color:var(--white);
+  font-family:'Poppins',sans-serif;font-size:.845rem;resize:none;max-height:110px;line-height:1.5;
+}
+#bot-input::placeholder{opacity:.3}
+#bot-send{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,box-shadow .2s;
+}
+#bot-send:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(0,180,216,.45)}
+#bot-send:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.bot-foot{font-size:.6rem;opacity:.22;text-align:center;margin-top:.4rem}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr}.hero-orb{display:none}.hero-card{display:none}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .cases-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr}.process-visual{display:none}
+  .testi-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:1fr}
+  .stats-band{grid-template-columns:repeat(2,1fr)}
+  footer{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:.85rem 1.25rem}
+  .nav-links,.nav-right{display:none}
+  .hamburger{display:flex}
+  .hero{padding:5.5rem 1.25rem 4rem}
+  .section{padding:4.5rem 1.25rem}
+  .section-divider{margin:0 1.25rem}
+  .services-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .stats-band{padding:2.5rem 1.25rem;grid-template-columns:repeat(2,1fr)}
+  .cta-section{margin:0 1.25rem 4rem;padding:3rem 1.5rem}
+  footer{padding:2.5rem 1.25rem;grid-template-columns:1fr}
+  .ft-btm{padding:1.25rem;flex-direction:column;gap:.4rem;text-align:center}
+  #bot-panel{right:.75rem;width:calc(100vw - 1.5rem)}
+  #bot-launcher{right:1rem;bottom:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── MOBILE MENU ───────────────────────────────────────────── -->
+<div class="mob-menu" id="mob-menu">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#results" onclick="closeMob()">Results</a>
+  <a href="#process" onclick="closeMob()">Process</a>
+  <a href="#testimonials" onclick="closeMob()">Clients</a>
+  <a href="#pricing" onclick="closeMob()">Pricing</a>
+  <a href="#" onclick="closeMob();openBot()" class="btn-primary" style="font-size:.95rem;padding:.9rem 2rem">🤖 Chat with NexaBot</a>
+</div>
+
+<!-- ── NAVBAR ────────────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="data:image/png;base64,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" alt="TimesTag Logo"/>
+    <div class="nav-logo-text">
+      <span class="brand">TimesTag</span>
+      <span class="tagline">New Generation of Digital World</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#results">Results</a>
+    <a href="#process">Process</a>
+    <a href="#testimonials">Clients</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn outline" onclick="openBot()"><span class="ai-dot"></span>NexaBot AI</button>
+    <a href="#pricing" class="nav-btn solid">Get Started →</a>
+  </div>
+  <div class="hamburger" id="ham" onclick="toggleMob()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════ -->
+<div style="position:relative;overflow:hidden">
+  <div class="hero-orb"></div>
+  <!-- particles -->
+  <div class="particle" style="width:5px;height:5px;background:var(--cyan);opacity:.4;top:20%;left:15%;animation-delay:0s"></div>
+  <div class="particle" style="width:4px;height:4px;background:var(--gold);opacity:.35;top:60%;left:8%;animation-delay:-3s"></div>
+  <div class="particle" style="width:6px;height:6px;background:var(--cyan);opacity:.25;top:35%;left:60%;animation-delay:-5s"></div>
+  <div class="particle" style="width:3px;height:3px;background:var(--gold);opacity:.4;top:75%;left:45%;animation-delay:-2s"></div>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-badge"><span class="live"></span>Digital Marketing Agency · Ahmedabad</div>
+        <h1>Grow Your Brand<br>With <span class="accent">Digital</span><br><span class="gold">Excellence</span></h1>
+        <p class="hero-desc">TimesTag delivers data-driven SEO, social media, PPC, and brand strategy that transforms businesses into market leaders. New generation of digital marketing.</p>
+        <div class="hero-btns">
+          <a href="#pricing" class="btn-primary">Start Growing Today →</a>
+          <button class="btn-secondary" onclick="openBot()">🤖 Chat with NexaBot</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hs-val" id="c1">500+</div><div class="hs-lbl">Clients Served</div></div>
+          <div><div class="hs-val" id="c2">8+</div><div class="hs-lbl">Years Experience</div></div>
+          <div><div class="hs-val" id="c3">98%</div><div class="hs-lbl">Client Retention</div></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-card">
+          <div class="hc-header">
+            <div class="hc-av">📊</div>
+            <div><div class="hc-title">Campaign Dashboard</div><div class="hc-sub">TimesTag Analytics · Live</div></div>
+          </div>
+          <div class="hc-metrics">
+            <div class="hc-metric"><div class="hc-m-val">4.8x</div><div class="hc-m-lbl">Avg ROAS</div></div>
+            <div class="hc-metric"><div class="hc-m-val">+215%</div><div class="hc-m-lbl">Org. Traffic</div></div>
+            <div class="hc-metric"><div class="hc-m-val">-54%</div><div class="hc-m-lbl">Lead Cost</div></div>
+            <div class="hc-metric"><div class="hc-m-val">500+</div><div class="hc-m-lbl">Brands Scaled</div></div>
+          </div>
+          <div class="hc-bar-label"><span>SEO Performance</span><span style="color:var(--cyan)">92%</span></div>
+          <div class="hc-bar-bg"><div class="hc-bar-fill" style="width:92%"></div></div>
+          <div class="hc-bar-label" style="margin-top:.75rem"><span>Paid Ads ROI</span><span style="color:var(--cyan)">87%</span></div>
+          <div class="hc-bar-bg"><div class="hc-bar-fill" style="width:87%"></div></div>
+          <div class="hc-services">
+            <span class="hc-tag">SEO</span><span class="hc-tag">PPC</span><span class="hc-tag">Social</span><span class="hc-tag">Branding</span><span class="hc-tag">Web</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TICKER ─────────────────────────────────────────────────── -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SERVICES
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="services">
+  <div class="services-intro">
+    <div class="fu">
+      <div class="sec-label">What We Do</div>
+      <h2 class="sec-title">Full-Stack <span class="accent">Digital</span><br>Marketing Power</h2>
+    </div>
+    <div class="fu d2"><p class="sec-sub">Every channel, every strategy — built for Ahmedabad businesses and brands across India to dominate their digital landscape.</p></div>
+  </div>
+  <div class="services-grid fu d1">
+    <div class="svc">
+      <div class="svc-n">01</div><div class="svc-ico">🔍</div>
+      <div class="svc-name">SEO & Content Strategy</div>
+      <div class="svc-desc">Technical SEO, keyword architecture, authoritative content & link building that builds organic dominance over time.</div>
+      <div class="svc-chips"><span class="chip">Technical SEO</span><span class="chip">Content</span><span class="chip">Link Building</span></div>
+      <div class="svc-price"><span>From ₹15,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">02</div><div class="svc-ico">📱</div>
+      <div class="svc-name">Social Media Marketing</div>
+      <div class="svc-desc">Platform-native content, community management & paid social across Instagram, Facebook, LinkedIn & YouTube.</div>
+      <div class="svc-chips"><span class="chip">Instagram</span><span class="chip">Facebook</span><span class="chip">LinkedIn</span></div>
+      <div class="svc-price"><span>From ₹12,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">03</div><div class="svc-ico">⚡</div>
+      <div class="svc-name">PPC & Google Ads</div>
+      <div class="svc-desc">Google Ads, Meta Ads, programmatic display & retargeting campaigns engineered for maximum ROI and lowest CAC.</div>
+      <div class="svc-chips"><span class="chip">Google Ads</span><span class="chip">Meta Ads</span><span class="chip">Retargeting</span></div>
+      <div class="svc-price"><span>From ₹10,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">04</div><div class="svc-ico">✦</div>
+      <div class="svc-name">Branding & Identity</div>
+      <div class="svc-desc">Logo design, brand guidelines, visual identity systems & messaging frameworks that command premium market positioning.</div>
+      <div class="svc-chips"><span class="chip">Logo</span><span class="chip">Brand Guide</span><span class="chip">Positioning</span></div>
+      <div class="svc-price"><span>From ₹25,000 project</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">05</div><div class="svc-ico">🖥</div>
+      <div class="svc-name">Website Design & CRO</div>
+      <div class="svc-desc">Conversion-focused websites, landing pages, UX audits & A/B testing to turn every visitor into a customer.</div>
+      <div class="svc-chips"><span class="chip">Web Design</span><span class="chip">CRO</span><span class="chip">WordPress</span></div>
+      <div class="svc-price"><span>From ₹35,000 project</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">06</div><div class="svc-ico">📊</div>
+      <div class="svc-name">Analytics & Growth</div>
+      <div class="svc-desc">GA4 setup, attribution modeling, custom dashboards & data-driven growth roadmaps for compounding ROI.</div>
+      <div class="svc-chips"><span class="chip">GA4</span><span class="chip">Attribution</span><span class="chip">Dashboards</span></div>
+      <div class="svc-price"><span>From ₹8,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS ──────────────────────────────────────────────────── -->
+<div class="stats-band">
+  <div class="sb-item fu"><div class="sb-val">500+</div><div class="sb-lbl">Clients Across India</div></div>
+  <div class="sb-item fu d1"><div class="sb-val">8+</div><div class="sb-lbl">Years of Excellence</div></div>
+  <div class="sb-item fu d2"><div class="sb-val">4.9★</div><div class="sb-lbl">Google Rating</div></div>
+  <div class="sb-item fu d3"><div class="sb-val">98%</div><div class="sb-lbl">Client Retention Rate</div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CASE STUDIES
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="results">
+  <div class="fu"><div class="sec-label">Client Results</div><h2 class="sec-title">Real Results, <span class="accent">Real</span> Businesses</h2></div>
+  <div class="cases-grid">
+    <div class="case fu d1">
+      <div class="case-ind">🛒 E-Commerce · Fashion & Lifestyle</div>
+      <div class="case-title">Ahmedabad Boutique: 4x Online Sales</div>
+      <div class="case-desc">SEO + Google Shopping + Instagram Ads combo. Grew from ₹2L to ₹8L monthly revenue in 7 months with 4.2x ROAS on paid channels.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">4x</div><div class="cn-lbl">Sales Growth</div></div>
+        <div><div class="cn-val">4.2x</div><div class="cn-lbl">ROAS</div></div>
+        <div><div class="cn-val">7mo</div><div class="cn-lbl">Timeline</div></div>
+      </div>
+    </div>
+    <div class="case fu d2">
+      <div class="case-ind">💻 SaaS · B2B Technology</div>
+      <div class="case-title">Gujarat Tech Startup: 60% Lower CPL</div>
+      <div class="case-desc">LinkedIn ABM + content SEO + CRO on landing pages. Reduced cost-per-lead by 60% while tripling lead quality and MQL conversion rate.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">-60%</div><div class="cn-lbl">Lead Cost</div></div>
+        <div><div class="cn-val">3x</div><div class="cn-lbl">Lead Quality</div></div>
+        <div><div class="cn-val">180%</div><div class="cn-lbl">Pipeline Growth</div></div>
+      </div>
+    </div>
+    <div class="case fu d1">
+      <div class="case-ind">🏥 Healthcare · Clinics & Hospitals</div>
+      <div class="case-title">Multi-Clinic Chain: 5x Patient Bookings</div>
+      <div class="case-desc">Local SEO + Google Ads + reputation management. Grew monthly patient bookings 5x across 8 locations, #1 rankings for 90% of keywords.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">5x</div><div class="cn-lbl">Bookings</div></div>
+        <div><div class="cn-val">90%</div><div class="cn-lbl">Keywords #1</div></div>
+        <div><div class="cn-val">10mo</div><div class="cn-lbl">Timeline</div></div>
+      </div>
+    </div>
+    <div class="case fu d2">
+      <div class="case-ind">🏢 Real Estate · Residential Projects</div>
+      <div class="case-title">Builder Brand: ₹5Cr in Qualified Leads</div>
+      <div class="case-desc">Facebook/Instagram Ads + landing page CRO + WhatsApp automation. Generated over ₹5 crore in qualified buyer leads in a single quarter.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">₹5Cr</div><div class="cn-lbl">Lead Pipeline</div></div>
+        <div><div class="cn-val">-45%</div><div class="cn-lbl">Cost per Lead</div></div>
+        <div><div class="cn-val">3mo</div><div class="cn-lbl">Timeline</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PROCESS
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="process">
+  <div class="fu"><div class="sec-label">How It Works</div><h2 class="sec-title">From Strategy<br>to <span class="accent">Dominance</span></h2></div>
+  <div class="process-grid">
+    <div class="process-steps fu d1">
+      <div class="pstep"><div class="ps-num">01</div><div><div class="ps-name">Discovery & Deep Audit</div><div class="ps-desc">We analyse your business, competitors, and current digital footprint to map every growth opportunity.</div></div></div>
+      <div class="pstep"><div class="ps-num">02</div><div><div class="ps-name">Custom Strategy Blueprint</div><div class="ps-desc">A tailored 90-day growth roadmap with channel mix, KPIs, content plan, and quick-win priorities.</div></div></div>
+      <div class="pstep"><div class="ps-num">03</div><div><div class="ps-name">Launch & Execute</div><div class="ps-desc">Our specialists launch campaigns across every channel — creative, copy, targeting, and automation all handled in-house.</div></div></div>
+      <div class="pstep"><div class="ps-num">04</div><div><div class="ps-name">Optimize & Scale</div><div class="ps-desc">Weekly reports, A/B testing, and iterative improvement. Results compound month over month.</div></div></div>
+    </div>
+    <div class="process-visual fu d2">
+      <div class="pv-head">Channel Performance · Client Average</div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,var(--sky),var(--cyan))">🔍</div><div class="pv-lbl">SEO</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:90%"></div></div><div class="pv-pct">90%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">⚡</div><div class="pv-lbl">PPC</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:94%"></div></div><div class="pv-pct">94%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,#e1306c,#f77737)">📱</div><div class="pv-lbl">Social</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:82%"></div></div><div class="pv-pct">82%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,#059669,#10b981)">📧</div><div class="pv-lbl">Email</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:88%"></div></div><div class="pv-pct">88%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,var(--gold),#e07b10)">✦</div><div class="pv-lbl">Branding</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:96%"></div></div><div class="pv-pct">96%</div></div>
+      <div style="margin-top:1.4rem;padding-top:1.1rem;border-top:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:.65rem;opacity:.4;margin-bottom:.4rem">Overall Client Satisfaction</div>
+        <div style="display:flex;align-items:baseline;gap:.3rem">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:2.4rem;font-weight:700;color:var(--cyan)">4.9</div>
+          <div style="color:var(--gold);font-size:.9rem">★★★★★</div>
+          <div style="font-size:.68rem;opacity:.4">/ 5.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="testimonials">
+  <div class="fu"><div class="sec-label">What Clients Say</div><h2 class="sec-title">Trusted by <span class="accent">500+</span> Businesses</h2></div>
+  <div class="testi-grid">
+    <div class="tcard fu d1"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"TimesTag took our Ahmedabad boutique from ₹2L to ₹8L monthly in 7 months. Their Instagram + Google combo is unreal."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,var(--sky),var(--cyan))">RG</div><div><div class="tcard-name">Riya Gupta</div><div class="tcard-role">Owner, Silkwave Fashion</div></div></div></div>
+    <div class="tcard fu d2"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"Our lead cost dropped 60% and quality doubled. TimesTag doesn't run ads — they build growth systems. Best investment we made."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#0e6b5e,#12957f)">AP</div><div><div class="tcard-name">Arjun Patel</div><div class="tcard-role">CEO, TechEdge Solutions</div></div></div></div>
+    <div class="tcard fu d3"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"The rebrand changed everything. We went from being one of many to being THE digital agency people recommended in Gujarat."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">MS</div><div><div class="tcard-name">Meera Shah</div><div class="tcard-role">Director, Luminary Consulting</div></div></div></div>
+    <div class="tcard fu d1"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"5x patient bookings across 8 clinics in 10 months. Their local SEO knowledge is in a completely different league than anyone else."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#ef4444,#b91c1c)">DM</div><div><div class="tcard-name">Dr. Divya Mehta</div><div class="tcard-role">Medical Director, HealthFirst</div></div></div></div>
+    <div class="tcard fu d2"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"Generated ₹5Cr in qualified real estate leads in one quarter. The WhatsApp automation alone saved my sales team 20 hours a week."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,var(--gold),#e07b10)">VJ</div><div><div class="tcard-name">Vivek Joshi</div><div class="tcard-role">MD, SkyLine Properties</div></div></div></div>
+    <div class="tcard fu d3"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"The NexaBot AI chatbot alone generated 12 leads in the first week. TimesTag thinks ahead — they bring solutions before you know you need them."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">NK</div><div><div class="tcard-name">Neha Kapoor</div><div class="tcard-role">Founder, BloomBrand Studio</div></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PRICING
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="pricing">
+  <div class="fu" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+    <div class="sec-label">Transparent Pricing</div>
+    <h2 class="sec-title">Plans That <span class="accent">Scale</span> With You</h2>
+    <p class="sec-sub" style="margin:0 auto">Every plan includes a dedicated account manager, monthly reporting & access to our full specialist team.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pc fu d1">
+      <div class="pc-tier">Starter</div>
+      <div class="pc-name">Foundation</div>
+      <div class="pc-price"><span class="pc-curr">₹</span><span class="pc-num">15,000</span><span class="pc-per">/month</span></div>
+      <div class="pc-feats">
+        <div class="pf"><span class="pf-ic">✦</span>SEO audit + on-page optimization</div>
+        <div class="pf"><span class="pf-ic">✦</span>2 social media platforms</div>
+        <div class="pf"><span class="pf-ic">✦</span>Monthly performance report</div>
+        <div class="pf"><span class="pf-ic">✦</span>4 content pieces per month</div>
+        <div class="pf"><span class="pf-ic">✦</span>Dedicated account manager</div>
+        <div class="pf"><span class="pf-ic">✦</span>Basic Google Ads setup</div>
+      </div>
+      <button class="pc-btn out" onclick="openBot()">Get Started →</button>
+    </div>
+    <div class="pc feat fu d2">
+      <div class="pc-badge">Most Popular</div>
+      <div class="pc-tier">Growth</div>
+      <div class="pc-name">Accelerator</div>
+      <div class="pc-price"><span class="pc-curr">₹</span><span class="pc-num">35,000</span><span class="pc-per">/month</span></div>
+      <div class="pc-feats">
+        <div class="pf"><span class="pf-ic">✦</span>Full SEO + content strategy</div>
+        <div class="pf"><span class="pf-ic">✦</span>PPC up to ₹2L ad spend managed</div>
+        <div class="pf"><span class="pf-ic">✦</span>4 platforms + paid social</div>
+        <div class="pf"><span class="pf-ic">✦</span>12 content pieces + 2 landing pages</div>
+        <div class="pf"><span class="pf-ic">✦</span>Weekly reports + strategy calls</div>
+        <div class="pf"><span class="pf-ic">✦</span>WhatsApp marketing automation</div>
+        <div class="pf"><span class="pf-ic">✦</span>CRO testing program</div>
+      </div>
+      <button class="pc-btn sol" onclick="openBot()">Get Started →</button>
+    </div>
+    <div class="pc fu d3">
+      <div class="pc-tier">Enterprise</div>
+      <div class="pc-name">Dominator</div>
+      <div class="pc-price"><span class="pc-curr">₹</span><span class="pc-num">75,000</span><span class="pc-per">/month</span></div>
+      <div class="pc-feats">
+        <div class="pf"><span class="pf-ic">✦</span>Everything in Accelerator</div>
+        <div class="pf"><span class="pf-ic">✦</span>Unlimited ad spend management</div>
+        <div class="pf"><span class="pf-ic">✦</span>Full brand identity refresh</div>
+        <div class="pf"><span class="pf-ic">✦</span>Custom website design & dev</div>
+        <div class="pf"><span class="pf-ic">✦</span>Dedicated creative team</div>
+        <div class="pf"><span class="pf-ic">✦</span>Advanced analytics & attribution</div>
+        <div class="pf"><span class="pf-ic">✦</span>Priority support + exec sessions</div>
+      </div>
+      <button class="pc-btn out" onclick="openBot()">Talk to Us →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA BAND ────────────────────────────────────────────────── -->
+<div class="cta-section fu">
+  <h2 class="cta-title">Ready to <span style="color:var(--cyan)">Dominate</span><br>Your Market?</h2>
+  <p class="cta-sub">Free 30-minute strategy session. No pitch. Just honest advice on your biggest growth opportunity.</p>
+  <div class="cta-btns">
+    <a href="tel:+919999999999" class="btn-primary">📞 Call Us Now</a>
+    <button class="btn-secondary" onclick="openBot()">🤖 Chat with NexaBot</button>
+    <a href="https://wa.me/919999999999" class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e)">💬 WhatsApp Us</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="ft-brand">
+    <img src="data:image/png;base64,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" alt="TimesTag"/>
+    <p>Ahmedabad's leading digital marketing agency. We help Indian businesses grow through data-driven strategy, creative execution, and AI-powered marketing.</p>
+  </div>
+  <div class="ft-col"><h4>Services</h4><a href="#">SEO & Content</a><a href="#">Social Media</a><a href="#">PPC & Google Ads</a><a href="#">Branding</a><a href="#">Web Design</a><a href="#">Analytics</a></div>
+  <div class="ft-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Case Studies</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Contact</a></div>
+  <div class="ft-col"><h4>Contact</h4><a href="#">📧 hello@timestag.in</a><a href="#">📞 +91 99999 99999</a><a href="#">📍 Ahmedabad, Gujarat</a><a href="#">💬 WhatsApp Us</a></div>
+</footer>
+<div class="ft-btm">
+  <span>© 2025 TimesTag Digital Marketing. All rights reserved.</span>
+  <span>New Generation of Digital World · Made with ❤️ in Ahmedabad</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     NEXABOT — AI AGENT WIDGET
+═══════════════════════════════════════════════════ -->
+<button id="bot-launcher" onclick="toggleBot()" aria-label="NexaBot AI">
+  <div class="bot-ring"></div>
+  <span class="bot-badge" id="bot-badge">1</span>
+  <svg id="lnch-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg id="lnch-cls" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+
+<div id="bot-panel" role="dialog">
+  <!-- Header -->
+  <div class="bot-hd">
+    <div class="bot-av">🤖<div class="bot-online"></div></div>
+    <div class="bot-hd-info">
+      <div class="bot-hd-name">NexaBot · TimesTag AI</div>
+      <div class="bot-hd-sub" id="bot-mode-label">Digital Marketing Assistant · Online</div>
+    </div>
+    <div class="bot-hd-btns">
+      <button class="bot-icon-btn" onclick="clearBot()" title="Clear">↺</button>
+      <button class="bot-icon-btn" onclick="toggleBot()">✕</button>
+    </div>
+  </div>
+
+  <!-- Mode selector -->
+  <div class="mode-bar">
+    <button class="mode-btn active" onclick="setMode('marketing','📈 Marketing Consultant','btn-marketing')">📈 Marketing</button>
+    <button class="mode-btn" onclick="setMode('sales','💼 Sales Assistant','btn-sales')">💼 Sales</button>
+    <button class="mode-btn" onclick="setMode('seo','🔍 SEO Expert','btn-seo')">🔍 SEO</button>
+    <button class="mode-btn" onclick="setMode('social','📱 Social Media','btn-social')">📱 Social</button>
+    <button class="mode-btn" onclick="setMode('support','🛠 Support','btn-support')">🛠 Support</button>
+  </div>
+
+  <!-- API Key Bar -->
+  <div class="api-strip" id="api-strip">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <input type="password" id="api-input" placeholder="Paste your Google Gemini API key to activate NexaBot…"/>
+    <button class="api-go" onclick="saveKey()">Activate ✓</button>
+  </div>
+
+  <!-- Messages -->
+  <div id="bot-msgs"></div>
+
+  <!-- Quick chips -->
+  <div class="qchips" id="qchips">
+    <button class="qchip" onclick="sendChip('What digital marketing services do you offer?')">Services</button>
+    <button class="qchip" onclick="sendChip('What are your pricing plans in INR?')">Pricing ₹</button>
+    <button class="qchip" onclick="sendChip('Give me 5 quick SEO tips for my business')">SEO Tips</button>
+    <button class="qchip" onclick="sendChip('How to grow on Instagram in 2025?')">Instagram Growth</button>
+    <button class="qchip" onclick="sendChip('I want to book a free strategy call')">Book a Call</button>
+  </div>
+
+  <!-- Input -->
+  <div class="bot-inp-area">
+    <div class="bot-inp-row">
+      <textarea id="bot-input" placeholder="Ask NexaBot anything about digital marketing…" rows="1"></textarea>
+      <button id="bot-send" onclick="sendMsg()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="bot-foot">NexaBot · Powered by Google Gemini · TimesTag Digital Marketing</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════ -->
+<script>
+/* ── NAV SCROLL ───────────────────────────────── */
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
+
+/* ── MOBILE MENU ──────────────────────────────── */
+function toggleMob(){const h=document.getElementById('ham'),m=document.getElementById('mob-menu');h.classList.toggle('active');m.classList.toggle('open')}
+function closeMob(){document.getElementById('ham').classList.remove('active');document.getElementById('mob-menu').classList.remove('open')}
+
+/* ── FADE-UP ──────────────────────────────────── */
+const fobs=new IntersectionObserver(els=>els.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
+document.querySelectorAll('.fu').forEach(e=>fobs.observe(e));
+
+/* ── TICKER ───────────────────────────────────── */
+const tItems=['SEO Optimisation','Social Media','Google Ads','Brand Strategy','Web Design','Content Marketing','Email Marketing','Analytics','Lead Generation','WhatsApp Marketing'];
+const tr=document.getElementById('ticker');
+[...tItems,...tItems].forEach(t=>{const d=document.createElement('div');d.className='ticker-item';d.innerHTML=`${t}<span class="ticker-sep">✦</span>`;tr.appendChild(d)});
+
+/* ── COUNTER ANIM ─────────────────────────────── */
+const cobs=new IntersectionObserver(els=>{
+  els.forEach(el=>{if(el.isIntersecting&&!el.dataset.done){
+    el.dataset.done='1';
+    const raw=el.textContent;const num=parseFloat(raw.replace(/[^0-9.]/g,''));const suf=raw.replace(/[0-9.]/g,'');
+    let n=0;const step=num/55;const t=setInterval(()=>{n=Math.min(n+step,num);el.textContent=Number.isInteger(num)?Math.floor(n)+suf:n.toFixed(1)+suf;if(n>=num)clearInterval(t)},18);
+  }});
+},{threshold:.5});
+document.querySelectorAll('.sb-val,.hs-val,.case-metric-val,.cn-val').forEach(e=>cobs.observe(e));
+
+/* ══════════════════════════════════════════════════
+   NEXABOT — GOOGLE GEMINI AI AGENT
+══════════════════════════════════════════════════ */
+let botOpen=false,botLoading=false,botHistory=[],botGreeted=false;
+let GKEY=localStorage.getItem('tt_gemini_key')||'';
+let currentMode='marketing';
+
+const SYSTEM_PROMPTS={
+  marketing:`You are NexaBot, the AI marketing consultant for TimesTag — Ahmedabad's leading digital marketing agency. You are warm, expert, and results-focused.
+
+ABOUT TIMESTAG:
+- Based in Ahmedabad, Gujarat, India
+- 500+ clients served across India
+- 8+ years of experience
+- Services: SEO, Social Media, PPC/Google Ads, Branding, Web Design, Analytics, WhatsApp Marketing
+- Google rating: 4.9★ | 98% client retention
+
+PRICING (INR):
+- Foundation Plan: ₹15,000/month (starter)
+- Accelerator Plan: ₹35,000/month (most popular)
+- Dominator Plan: ₹75,000/month (enterprise)
+- Website Design: From ₹35,000 (project)
+- Branding: From ₹25,000 (project)
+
+YOUR BEHAVIOR:
+- Be conversational and warm. Use short paragraphs.
+- Give specific, actionable marketing tips relevant to Indian businesses.
+- Reference Ahmedabad/Gujarat/India context when relevant.
+- End with a question or CTA. Use occasional relevant emojis.
+- Suggest booking a FREE strategy call for serious prospects: call/WhatsApp +91-99999-99999 or email hello@timestag.in
+
+LEAD CAPTURE:
+When someone asks about pricing or hiring TimesTag, naturally collect over conversation:
+1. Name  2. Email or WhatsApp number  3. Business type  4. Monthly budget  5. Main goal
+Once all 5 collected, include at end of reply on its own line:
+LEAD_CAPTURED:{"name":"...","contact":"...","business":"...","budget":"...","goal":"..."}`,
+
+  sales:`You are NexaBot in Sales mode for TimesTag. Help qualify and convert prospects. Focus on understanding their business needs and matching TimesTag services. Be consultative, not pushy. Ask discovery questions. Always move toward booking a free strategy call.`,
+
+  seo:`You are NexaBot in SEO Expert mode for TimesTag. Give deep, actionable SEO advice for Indian businesses. Cover: technical SEO, local SEO (Google Business Profile for Indian businesses), content strategy, backlink building, Core Web Vitals, E-E-A-T. Reference Google's guidelines and give practical steps.`,
+
+  social:`You are NexaBot in Social Media mode for TimesTag. Expert advice on Instagram, Facebook, LinkedIn, YouTube & WhatsApp marketing for Indian brands. Cover: content strategy, reels, hashtags, paid social, influencer marketing in India, regional language content, WhatsApp Business automation.`,
+
+  support:`You are NexaBot in Support mode for TimesTag. Help existing clients with: campaign questions, report interpretation, account queries, or escalations. For urgent issues, direct to hello@timestag.in or +91-99999-99999.`
+};
+
+/* ── BOT UI ───────────────────────────────────── */
+function toggleBot(){botOpen?closeBot():openBot()}
+function openBot(){
+  botOpen=true;
+  document.getElementById('bot-panel').classList.add('open');
+  document.getElementById('bot-badge').style.display='none';
+  document.getElementById('lnch-open').style.display='none';
+  document.getElementById('lnch-cls').style.display='block';
+  document.getElementById('bot-input').focus();
+  if(GKEY)document.getElementById('api-strip').style.display='none';
+  if(!botGreeted){botGreeted=true;setTimeout(greetBot,450)}
+}
+function closeBot(){
+  botOpen=false;
+  document.getElementById('bot-panel').classList.remove('open');
+  document.getElementById('lnch-open').style.display='block';
+  document.getElementById('lnch-cls').style.display='none';
+}
+function clearBot(){botHistory=[];botGreeted=false;document.getElementById('bot-msgs').innerHTML='';document.getElementById('qchips').style.display='flex';setTimeout(greetBot,300)}
+function saveKey(){
+  const k=document.getElementById('api-input').value.trim();
+  if(!k){alert('Please paste your Gemini API key first.');return}
+  GKEY=k;localStorage.setItem('tt_gemini_key',k);
+  document.getElementById('api-strip').style.display='none';
+  addBotMsg('🔑 API key saved! NexaBot is now fully activated.\n\n👋 Hi! I\'m **NexaBot**, TimesTag\'s AI marketing assistant.\n\nHow can I help grow your business today?');
+}
+function setMode(mode,label,btnId){
+  currentMode=mode;
+  document.getElementById('bot-mode-label').textContent=label+' · Online';
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  botHistory=[];
+  document.getElementById('bot-msgs').innerHTML='';
+  const modeGreets={
+    marketing:"📈 Switched to **Marketing Consultant** mode. I can help with SEO, social media, PPC, branding and overall digital strategy. What's your biggest marketing challenge?",
+    sales:"💼 Switched to **Sales Assistant** mode. I'm here to help you understand how TimesTag can grow your business. What type of business do you run?",
+    seo:"🔍 Switched to **SEO Expert** mode. I can help with technical SEO, local SEO, content strategy and Google rankings. What SEO challenge can I solve for you?",
+    social:"📱 Switched to **Social Media** mode. Instagram, Facebook, LinkedIn, YouTube, WhatsApp — I've got you covered. What platform do you want to grow on?",
+    support:"🛠 Switched to **Support** mode. I'm here to help with any questions about your TimesTag campaigns or account. What do you need help with?"
+  };
+  addBotMsg(modeGreets[mode]);
+}
+function greetBot(){
+  addBotMsg("👋 Hey there! I'm **NexaBot**, TimesTag's AI marketing assistant.\n\nI can help with SEO tips, social media strategy, pricing, or anything about growing your business digitally.\n\n🇮🇳 Proudly serving Ahmedabad & businesses across India!\n\nWhat's your biggest marketing challenge today?");
+}
+setTimeout(()=>{if(!botOpen)document.getElementById('bot-badge').style.display='flex'},8000);
+
+/* ── MESSAGES ─────────────────────────────────── */
+function addUserBotMsg(t){
+  botHistory.push({role:'user',content:t});
+  const m=document.getElementById('bot-msgs');
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const r=document.createElement('div');r.className='mrow user';
+  r.innerHTML=`<span class="mtime">${time}</span><div class="mbbl user">${esc(t)}</div>`;
+  m.appendChild(r);s2b();
+}
+function addBotMsg(t,lead=false){
+  const m=document.getElementById('bot-msgs');
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  if(lead){
+    const b=document.createElement('div');b.className='lead-bann';
+    b.innerHTML=`<strong>✅ Details saved!</strong> A TimesTag specialist will contact you within 1 business day.<br>📞 Or call/WhatsApp us now: <strong>+91-99999-99999</strong><br>📧 Email: <strong>hello@timestag.in</strong>`;
+    m.appendChild(b);
+  }
+  const r=document.createElement('div');r.className='mrow';
+  r.innerHTML=`<div class="mav">🤖</div><div class="mbbl ai">${fmt(t)}</div><span class="mtime">${time}</span>`;
+  m.appendChild(r);
+  botHistory.push({role:'assistant',content:t});
+  s2b();
+}
+function showTyp(){
+  const m=document.getElementById('bot-msgs');
+  const r=document.createElement('div');r.className='trow';r.id='typing';
+  r.innerHTML=`<div class="mav">🤖</div><div class="tbbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  m.appendChild(r);s2b();
+}
+function hideTyp(){const t=document.getElementById('typing');if(t)t.remove()}
+function s2b(){const m=document.getElementById('bot-msgs');m.scrollTop=m.scrollHeight}
+
+/* ── SEND ─────────────────────────────────────── */
+function sendChip(t){document.getElementById('qchips').style.display='none';addUserBotMsg(t);fetchBot()}
+async function sendMsg(){
+  const i=document.getElementById('bot-input');const t=i.value.trim();
+  if(!t||botLoading)return;
+  addUserBotMsg(t);i.value='';i.style.height='auto';
+  await fetchBot();
+}
+async function fetchBot(){
+  botLoading=true;setDis(true);showTyp();
+  try{
+    let reply=await callGemini();
+    hideTyp();
+    let lead=false;
+    const m=reply.match(/LEAD_CAPTURED:([\s\S]*?\})/);
+    if(m){try{const l=JSON.parse(m[1]);console.log('🎯 TimesTag Lead:',l);lead=true}catch(_){}reply=reply.replace(/LEAD_CAPTURED:[\s\S]*$/,'').trim()}
+    addBotMsg(reply,lead);
+  }catch(e){
+    hideTyp();
+    addBotMsg("Oops! Something went wrong. 😅 Please check your API key or try again.\n\nOr reach us directly: **+91-99999-99999** or **hello@timestag.in**");
+    console.error(e);
+  }finally{botLoading=false;setDis(false);document.getElementById('bot-input').focus()}
+}
+async function callGemini(){
+  if(!GKEY)return"🔑 Please enter your Google Gemini API key above to activate NexaBot!\n\nGet one **free** at **aistudio.google.com/app/apikey** — takes 2 minutes.";
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GKEY}`;
+  const contents=[
+    {role:'user',parts:[{text:'Confirm your role briefly.'}]},
+    {role:'model',parts:[{text:'I am NexaBot, TimesTag\'s AI marketing assistant. Ready to help!'}]},
+    ...botHistory.map(h=>({role:h.role==='assistant'?'model':'user',parts:[{text:h.content}]}))
+  ];
+  const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents,systemInstruction:{parts:[{text:SYSTEM_PROMPTS[currentMode]}]},generationConfig:{maxOutputTokens:600,temperature:.85}})});
+  if(!res.ok){const e=await res.json();if(e?.error?.message?.includes('API key not valid')||e?.error?.message?.includes('API_KEY_INVALID'))return"⚠️ Invalid API key. Please check at **aistudio.google.com** and re-enter.";throw new Error(e?.error?.message||'Gemini error')}
+  const d=await res.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||"I couldn't generate a response. Please try again!";
+}
+function setDis(v){document.getElementById('bot-input').disabled=v;document.getElementById('bot-send').disabled=v}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmt(s){
+  return esc(s)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/`(.*?)`/g,'<code style="background:rgba(0,180,216,.12);padding:1px 5px;border-radius:4px;font-size:.82em">$1</code>')
+    .replace(/\n/g,'<br>')
+    .replace(/•\s(.*?)(?=<br>|$)/g,'<span style="display:flex;gap:.4rem;margin:.15rem 0"><span style="color:var(--cyan);flex-shrink:0">▸</span><span>$1</span></span>');
+}
+document.getElementById('bot-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}});
+document.getElementById('bot-input').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px'});
+document.getElementById('api-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveKey()});
+if(GKEY)document.getElementById('api-input').value='••••••••••••';
+</script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TimesTag — New Generation of Digital World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+
+<style>
+/* ═══════════════════════════════════════════════════
+   ROOT TOKENS
+═══════════════════════════════════════════════════ */
+:root{
+  --navy:#05122b;
+  --navy2:#081a3d;
+  --blue:#0a2560;
+  --sky:#1560bd;
+  --cyan:#00b4d8;
+  --cyan2:#48cae4;
+  --gold:#f4a11d;
+  --gold2:#ffc14d;
+  --white:#f0f6ff;
+  --muted:#8ca0c0;
+  --border:rgba(0,180,216,0.18);
+  --card:rgba(8,26,61,0.85);
+  --glass:rgba(5,18,43,0.7);
+  --r:14px;
+  --bot-bg:#060f22;
+  --bot-card:#0b1930;
+  --bot-border:rgba(0,180,216,0.2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--navy);
+  color:var(--white);
+  overflow-x:hidden;
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--sky);border-radius:3px}
+
+/* ═══════════════════════════════════════════════════
+   NOISE + GRID BG
+═══════════════════════════════════════════════════ */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 0%,rgba(0,180,216,.1),transparent),
+    radial-gradient(ellipse 60% 50% at 80% 100%,rgba(21,96,189,.12),transparent),
+    linear-gradient(rgba(0,180,216,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,180,216,.03) 1px,transparent 1px);
+  background-size:100% 100%,100% 100%,50px 50px,50px 50px;
+}
+
+/* ═══════════════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 2.5rem;
+  background:rgba(5,18,43,.9);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+nav.scrolled{padding:.65rem 2.5rem;background:rgba(5,18,43,.97)}
+.nav-logo{display:flex;align-items:center;gap:.75rem}
+.nav-logo img{height:48px;filter:drop-shadow(0 2px 8px rgba(0,180,216,.4))}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.1}
+.nav-logo-text .brand{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.25rem;
+  letter-spacing:.05em;color:var(--white);
+}
+.nav-logo-text .tagline{font-size:.58rem;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{
+  font-size:.82rem;font-weight:500;color:var(--white);opacity:.65;
+  text-decoration:none;letter-spacing:.03em;transition:all .2s;
+  position:relative;padding-bottom:3px;
+}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--cyan);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+.nav-links a:hover{opacity:1;color:var(--cyan)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-right{display:flex;gap:.75rem;align-items:center}
+.nav-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.45rem 1.1rem;border-radius:40px;font-size:.78rem;font-weight:600;
+  text-decoration:none;transition:all .25s;cursor:pointer;border:none;
+}
+.nav-btn.outline{background:transparent;border:1px solid var(--border);color:var(--cyan)}
+.nav-btn.outline:hover{background:rgba(0,180,216,.1);border-color:var(--cyan)}
+.nav-btn.solid{background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff}
+.nav-btn.solid:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,180,216,.4)}
+/* pulsing AI dot */
+.ai-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:ai-pulse 1.8s ease-in-out infinite}
+@keyframes ai-pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.5)}50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem}
+.hamburger span{width:22px;height:2px;background:var(--white);border-radius:2px;display:block;transition:all .3s}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-menu{
+  display:none;position:fixed;inset:0;z-index:850;
+  background:rgba(5,18,43,.98);flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--white);text-decoration:none;opacity:.7;transition:all .2s}
+.mob-menu a:hover{opacity:1;color:var(--cyan)}
+
+/* ═══════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:7rem 2.5rem 5rem;position:relative;overflow:hidden;
+}
+/* animated globe/orb */
+.hero-orb{
+  position:absolute;right:-120px;top:50%;transform:translateY(-50%);
+  width:620px;height:620px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(0,180,216,.22),rgba(21,96,189,.12),transparent 70%);
+  border:1px solid rgba(0,180,216,.12);
+  animation:orb-spin 30s linear infinite;
+}
+.hero-orb::before{
+  content:'';position:absolute;inset:20px;border-radius:50%;
+  border:1px dashed rgba(0,180,216,.1);
+  animation:orb-spin 20s linear infinite reverse;
+}
+.hero-orb::after{
+  content:'';position:absolute;inset:60px;border-radius:50%;
+  border:1px solid rgba(0,180,216,.08);
+  animation:orb-spin 15s linear infinite;
+}
+@keyframes orb-spin{from{transform:translateY(-50%) rotate(0)}to{transform:translateY(-50%) rotate(360deg)}}
+/* floating particles */
+.particle{position:absolute;border-radius:50%;pointer-events:none;animation:float-p 8s ease-in-out infinite}
+@keyframes float-p{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-24px) rotate(180deg)}}
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(0,180,216,.08);border:1px solid var(--border);
+  padding:.38rem 1rem;border-radius:40px;
+  font-size:.7rem;font-weight:600;color:var(--cyan);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.75rem;
+}
+.hero-badge .live{width:7px;height:7px;background:#4ade80;border-radius:50%;animation:ai-pulse 2s ease-in-out infinite}
+h1{font-family:'Rajdhani',sans-serif;font-size:clamp(2.8rem,6vw,5.2rem);font-weight:700;line-height:.97;letter-spacing:-.01em;margin-bottom:1.5rem}
+h1 .accent{color:var(--cyan)}
+h1 .gold{color:var(--gold)}
+.hero-desc{font-size:1rem;font-weight:300;line-height:1.8;opacity:.65;max-width:480px;margin-bottom:2.25rem}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  color:#fff;padding:.82rem 1.75rem;border-radius:40px;
+  font-weight:600;font-size:.88rem;border:none;cursor:pointer;text-decoration:none;
+  transition:all .25s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,180,216,.4)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:transparent;color:var(--white);
+  padding:.82rem 1.75rem;border-radius:40px;
+  font-weight:600;font-size:.88rem;
+  border:1px solid rgba(255,255,255,.15);cursor:pointer;transition:all .25s;
+}
+.btn-secondary:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-stats{display:flex;gap:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.hs-val{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--cyan)}
+.hs-lbl{font-size:.68rem;opacity:.45;text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem}
+/* hero right card */
+.hero-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:1.75rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+  animation:float-card 5s ease-in-out infinite;
+}
+@keyframes float-card{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hc-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem}
+.hc-av{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.hc-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem}
+.hc-sub{font-size:.68rem;opacity:.45;margin-top:.1rem}
+.hc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.hc-metric{background:rgba(0,180,216,.06);border:1px solid var(--border);border-radius:10px;padding:.85rem}
+.hc-m-val{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--cyan)}
+.hc-m-lbl{font-size:.65rem;opacity:.45;text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem}
+.hc-bar-label{font-size:.7rem;opacity:.5;margin-bottom:.4rem;display:flex;justify-content:space-between}
+.hc-bar-bg{height:6px;background:rgba(255,255,255,.06);border-radius:3px}
+.hc-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),var(--cyan))}
+.hc-services{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.25rem}
+.hc-tag{
+  font-size:.65rem;font-weight:600;padding:.28rem .7rem;border-radius:40px;
+  background:rgba(0,180,216,.1);border:1px solid rgba(0,180,216,.2);color:var(--cyan);
+}
+
+/* ═══════════════════════════════════════════════════
+   TICKER
+═══════════════════════════════════════════════════ */
+.ticker-wrap{overflow:hidden;background:linear-gradient(135deg,var(--sky),var(--blue));padding:.75rem 0;position:relative;z-index:2}
+.ticker-track{display:flex;gap:3rem;animation:ticker 28s linear infinite;width:max-content}
+.ticker-item{display:flex;align-items:center;gap:.6rem;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:#fff}
+.ticker-sep{opacity:.4;font-size:1rem}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══════════════════════════════════════════════════
+   SHARED SECTION STYLES
+═══════════════════════════════════════════════════ */
+.section{padding:6.5rem 2.5rem;max-width:1200px;margin:0 auto;position:relative;z-index:2}
+.section-divider{height:1px;background:var(--border);margin:0 2.5rem;opacity:.5}
+.sec-label{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:1rem;
+}
+.sec-label::before{content:'';width:20px;height:1.5px;background:var(--cyan);display:block}
+.sec-title{
+  font-family:'Rajdhani',sans-serif;font-size:clamp(1.9rem,4vw,3.1rem);
+  font-weight:700;line-height:1.05;letter-spacing:-.01em;margin-bottom:1rem;
+}
+.sec-title .accent{color:var(--cyan)}
+.sec-title .gold{color:var(--gold)}
+.sec-sub{font-size:.9rem;opacity:.55;line-height:1.75;max-width:500px}
+/* fade-up */
+.fu{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.fu.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* ═══════════════════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════════════════ */
+.services-intro{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:3rem}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.svc{
+  background:var(--navy2);padding:2.25rem;position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.svc:hover{background:var(--blue)}
+.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sky),var(--cyan));opacity:0;transition:opacity .3s}
+.svc:hover::before{opacity:1}
+.svc-n{font-family:'Rajdhani',sans-serif;font-size:3rem;font-weight:700;color:rgba(0,180,216,.08);line-height:1;margin-bottom:.75rem;transition:color .3s}
+.svc:hover .svc-n{color:rgba(0,180,216,.16)}
+.svc-ico{font-size:1.6rem;margin-bottom:1rem}
+.svc-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:.6rem}
+.svc-desc{font-size:.82rem;line-height:1.7;opacity:.5}
+.svc-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1rem}
+.chip{font-size:.62rem;font-weight:600;padding:.22rem .6rem;border-radius:40px;background:rgba(0,180,216,.08);border:1px solid rgba(0,180,216,.15);opacity:.7}
+.svc-price{margin-top:1.1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06);font-size:.72rem;color:var(--cyan);font-weight:600;display:flex;justify-content:space-between}
+.svc-arr{opacity:.3;transition:all .25s}
+.svc:hover .svc-arr{opacity:1;transform:translateX(4px)}
+
+/* ═══════════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════════ */
+.stats-band{
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  padding:3.5rem 2.5rem;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;
+  position:relative;z-index:2;
+}
+.sb-item{text-align:center}
+.sb-val{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;color:#fff;line-height:1}
+.sb-lbl{font-size:.72rem;font-weight:600;opacity:.65;text-transform:uppercase;letter-spacing:.08em;margin-top:.35rem}
+
+/* ═══════════════════════════════════════════════════
+   CASE STUDIES
+═══════════════════════════════════════════════════ */
+.cases-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
+.case{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:2rem;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;
+}
+.case:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.case::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sky),var(--cyan))}
+.case-ind{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:.75rem}
+.case-title{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1.2rem;margin-bottom:.65rem}
+.case-desc{font-size:.82rem;opacity:.5;line-height:1.7;margin-bottom:1.25rem}
+.case-nums{display:flex;gap:1.5rem}
+.cn-val{font-family:'Rajdhani',sans-serif;font-size:1.5rem;font-weight:700;color:var(--gold)}
+.cn-lbl{font-size:.62rem;opacity:.4;text-transform:uppercase;letter-spacing:.06em;margin-top:.15rem}
+
+/* ═══════════════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════════════ */
+.process-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:3rem}
+.process-steps{}
+.pstep{display:grid;grid-template-columns:52px 1fr;gap:1.1rem;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,.06);align-items:start;transition:all .25s}
+.pstep:hover .ps-num{color:var(--cyan)}
+.ps-num{font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;color:rgba(0,180,216,.2);line-height:1.1;transition:color .3s}
+.ps-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.35rem}
+.ps-desc{font-size:.8rem;opacity:.5;line-height:1.65}
+.process-visual{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem}
+.pv-head{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem}
+.pv-row{display:flex;align-items:center;gap:.9rem;padding:.65rem;border-radius:8px;margin-bottom:.4rem;transition:background .25s}
+.pv-row:hover{background:rgba(0,180,216,.06)}
+.pv-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0}
+.pv-lbl{font-size:.82rem;font-weight:600;min-width:80px}
+.pv-bar-w{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px}
+.pv-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sky),var(--cyan))}
+.pv-pct{font-size:.68rem;color:var(--cyan);font-weight:700;margin-left:.4rem}
+
+/* ═══════════════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════════════ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3rem}
+.tcard{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:1.85rem;transition:transform .3s,box-shadow .3s;
+}
+.tcard:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(0,0,0,.5)}
+.tcard-stars{color:var(--gold);font-size:.82rem;margin-bottom:.9rem}
+.tcard-q{font-size:.845rem;line-height:1.75;opacity:.65;font-style:italic;margin-bottom:1.25rem}
+.tcard-auth{display:flex;align-items:center;gap:.75rem}
+.tcard-av{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:var(--navy);
+}
+.tcard-name{font-weight:600;font-size:.845rem}
+.tcard-role{font-size:.7rem;opacity:.4;margin-top:.1rem}
+
+/* ═══════════════════════════════════════════════════
+   PRICING
+═══════════════════════════════════════════════════ */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.pc{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:2.25rem;position:relative;transition:transform .3s;
+}
+.pc.feat{
+  background:linear-gradient(160deg,rgba(21,96,189,.3),var(--card));
+  border-color:var(--cyan);
+  box-shadow:0 0 0 1px rgba(0,180,216,.15),0 24px 60px rgba(0,0,0,.5);
+}
+.pc:hover{transform:translateY(-3px)}
+.pc-badge{
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff;
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.28rem .9rem;border-radius:40px;white-space:nowrap;
+}
+.pc-tier{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:.6rem}
+.pc-name{font-family:'Rajdhani',sans-serif;font-size:1.35rem;font-weight:700;margin-bottom:.9rem}
+.pc-price{display:flex;align-items:flex-start;gap:.2rem;margin-bottom:1.35rem;padding-bottom:1.35rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.pc-curr{font-size:.9rem;font-weight:700;color:var(--cyan);margin-top:.4rem}
+.pc-num{font-family:'Rajdhani',sans-serif;font-size:2.8rem;font-weight:700;line-height:1;color:var(--cyan)}
+.pc-per{font-size:.72rem;opacity:.4;align-self:flex-end;margin-bottom:.3rem}
+.pc-feats{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.75rem}
+.pf{display:flex;align-items:flex-start;gap:.55rem;font-size:.82rem;opacity:.7}
+.pf-ic{color:var(--cyan);flex-shrink:0;margin-top:.05rem;font-size:.75rem}
+.pc-btn{
+  display:block;text-align:center;padding:.75rem;border-radius:40px;
+  font-weight:700;font-size:.82rem;cursor:pointer;border:none;width:100%;transition:all .25s;text-decoration:none;
+}
+.pc-btn.out{background:transparent;border:1px solid var(--border);color:var(--white)}
+.pc-btn.out:hover{border-color:var(--cyan);color:var(--cyan)}
+.pc-btn.sol{background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff}
+.pc-btn.sol:hover{box-shadow:0 8px 24px rgba(0,180,216,.4)}
+
+/* ═══════════════════════════════════════════════════
+   CTA BAND
+═══════════════════════════════════════════════════ */
+.cta-section{
+  margin:0 2.5rem 5rem;
+  background:linear-gradient(135deg,rgba(10,37,96,.9),rgba(8,26,61,.95));
+  border:1px solid var(--border);border-radius:20px;padding:4.5rem 3rem;
+  text-align:center;position:relative;overflow:hidden;z-index:2;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(0,180,216,.12),transparent 55%);
+}
+.cta-title{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;margin-bottom:.85rem;position:relative}
+.cta-sub{opacity:.55;font-size:.95rem;margin-bottom:2.25rem;position:relative}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+footer{border-top:1px solid var(--border);padding:3rem 2.5rem;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;position:relative;z-index:2}
+.ft-brand img{height:44px;margin-bottom:.85rem;filter:drop-shadow(0 2px 6px rgba(0,180,216,.3))}
+.ft-brand p{font-size:.8rem;opacity:.4;line-height:1.75;max-width:240px}
+.ft-col h4{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:1.1rem}
+.ft-col a{display:block;font-size:.8rem;opacity:.4;margin-bottom:.6rem;text-decoration:none;color:inherit;transition:opacity .2s}
+.ft-col a:hover{opacity:.9;color:var(--cyan)}
+.ft-btm{border-top:1px solid rgba(255,255,255,.06);padding:1.5rem 2.5rem;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;font-size:.73rem;opacity:.3;position:relative;z-index:2}
+
+/* ═══════════════════════════════════════════════════
+   ┌─────────────────────────────────────────────┐
+   │           NEXABOT — AI AGENT WIDGET         │
+   └─────────────────────────────────────────────┘
+═══════════════════════════════════════════════════ */
+#bot-launcher{
+  position:fixed;bottom:1.75rem;right:1.75rem;z-index:1000;
+  width:62px;height:62px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 36px rgba(0,180,216,.5);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+}
+#bot-launcher:hover{transform:scale(1.12);box-shadow:0 14px 48px rgba(0,180,216,.7)}
+#bot-launcher svg{width:26px;height:26px;color:#fff}
+.bot-ring{position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--cyan);animation:bot-ring 2.5s ease-out infinite;opacity:0}
+@keyframes bot-ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}
+.bot-badge{position:absolute;top:-1px;right:-1px;width:19px;height:19px;background:#ef4444;border-radius:50%;border:2px solid var(--navy);display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:800;color:#fff;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+
+/* bot panel */
+#bot-panel{
+  position:fixed;bottom:6.5rem;right:1.75rem;z-index:1000;
+  width:min(430px,calc(100vw - 2.5rem));
+  height:min(660px,calc(100vh - 9rem));
+  background:var(--bot-bg);border:1px solid var(--bot-border);border-radius:20px;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 28px 80px rgba(0,0,0,.8),0 0 0 1px rgba(0,180,216,.05);
+  transform:translateY(22px) scale(.95);opacity:0;pointer-events:none;
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1),opacity .26s ease;
+}
+#bot-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+
+/* bot header */
+.bot-hd{
+  padding:1.1rem 1.4rem;
+  background:linear-gradient(135deg,#0a1e42,#060f22);
+  border-bottom:1px solid var(--bot-border);
+  display:flex;align-items:center;gap:.85rem;flex-shrink:0;
+}
+.bot-av{
+  width:46px;height:46px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  position:relative;
+}
+.bot-online{
+  position:absolute;bottom:1px;right:1px;width:11px;height:11px;
+  background:#4ade80;border-radius:50%;border:2.5px solid var(--bot-bg);
+  animation:online 2s ease-in-out infinite;
+}
+@keyframes online{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}50%{box-shadow:0 0 0 4px rgba(74,222,128,0)}}
+.bot-hd-info{flex:1}
+.bot-hd-name{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.02em}
+.bot-hd-sub{font-size:.66rem;opacity:.4;margin-top:1px}
+.bot-hd-btns{display:flex;gap:.45rem}
+.bot-icon-btn{
+  width:29px;height:29px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);font-size:.8rem;transition:background .2s;
+}
+.bot-icon-btn:hover{background:rgba(255,255,255,.14)}
+
+/* mode bar */
+.mode-bar{
+  display:flex;gap:.4rem;overflow-x:auto;padding:.65rem 1rem;
+  background:rgba(0,0,0,.25);border-bottom:1px solid var(--bot-border);
+  flex-shrink:0;scrollbar-width:none;
+}
+.mode-bar::-webkit-scrollbar{display:none}
+.mode-btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.32rem .8rem;border-radius:40px;border:1px solid var(--bot-border);
+  background:transparent;color:var(--muted);font-size:.7rem;font-weight:600;
+  cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Poppins',sans-serif;
+}
+.mode-btn.active,.mode-btn:hover{background:rgba(0,180,216,.12);border-color:var(--cyan);color:var(--cyan)}
+
+/* api bar */
+.api-strip{
+  padding:.6rem 1rem;background:rgba(0,180,216,.04);
+  border-bottom:1px solid var(--bot-border);
+  display:flex;gap:.5rem;align-items:center;flex-shrink:0;
+}
+.api-strip input{
+  flex:1;background:rgba(0,0,0,.3);border:1px solid var(--bot-border);
+  border-radius:8px;padding:.38rem .7rem;color:var(--white);
+  font-size:.7rem;font-family:'Poppins',sans-serif;outline:none;
+}
+.api-strip input:focus{border-color:rgba(0,180,216,.45)}
+.api-strip input::placeholder{opacity:.3;font-size:.68rem}
+.api-go{
+  background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff;
+  border:none;border-radius:8px;padding:.38rem .85rem;
+  font-size:.7rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;
+}
+.api-go:hover{box-shadow:0 4px 16px rgba(0,180,216,.4)}
+
+/* messages */
+#bot-msgs{
+  flex:1;overflow-y:auto;padding:1.1rem;
+  display:flex;flex-direction:column;gap:.85rem;scroll-behavior:smooth;
+}
+#bot-msgs::-webkit-scrollbar{width:3px}
+#bot-msgs::-webkit-scrollbar-thumb{background:var(--bot-border);border-radius:2px}
+.mrow{display:flex;align-items:flex-end;gap:.55rem}
+.mrow.user{flex-direction:row-reverse}
+.mav{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:#fff;
+}
+.mbbl{
+  max-width:82%;padding:.78rem 1rem;border-radius:1.1rem;
+  font-size:.835rem;line-height:1.65;animation:bubble-in .24s ease;
+}
+@keyframes bubble-in{from{transform:translateY(7px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mbbl.ai{background:var(--bot-card);color:var(--white);border:1px solid var(--bot-border);border-bottom-left-radius:4px}
+.mbbl.user{background:linear-gradient(135deg,var(--sky),var(--cyan));color:#fff;font-weight:500;border-bottom-right-radius:4px}
+.mtime{font-size:.58rem;opacity:.25;align-self:flex-end;flex-shrink:0}
+
+/* typing */
+.trow{display:flex;align-items:center;gap:.55rem}
+.tbbl{background:var(--bot-card);border:1px solid var(--bot-border);border-radius:1.1rem;border-bottom-left-radius:4px;padding:.82rem 1rem;display:flex;gap:4px;align-items:center}
+.td{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:td-b 1.3s ease-in-out infinite;opacity:.6}
+.td:nth-child(2){animation-delay:.15s}.td:nth-child(3){animation-delay:.3s}
+@keyframes td-b{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px);opacity:1}}
+
+/* lead banner */
+.lead-bann{
+  background:linear-gradient(135deg,rgba(21,96,189,.2),rgba(0,180,216,.1));
+  border:1px solid rgba(0,180,216,.3);border-radius:10px;
+  padding:.85rem 1rem;font-size:.78rem;line-height:1.55;animation:bubble-in .4s ease;
+}
+.lead-bann strong{color:#4ade80}
+
+/* quick chips */
+.qchips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.7rem 1.1rem 0}
+.qchip{
+  background:rgba(0,180,216,.08);border:1px solid var(--bot-border);
+  border-radius:40px;padding:.35rem .82rem;font-size:.7rem;color:var(--cyan);
+  cursor:pointer;transition:all .2s;font-weight:600;white-space:nowrap;font-family:'Poppins',sans-serif;
+}
+.qchip:hover{background:rgba(0,180,216,.18);transform:translateY(-1px)}
+
+/* input */
+.bot-inp-area{
+  padding:.9rem 1.1rem;border-top:1px solid var(--bot-border);
+  background:rgba(6,15,34,.9);flex-shrink:0;
+}
+.bot-inp-row{
+  display:flex;align-items:center;gap:.5rem;
+  background:var(--bot-card);border:1px solid var(--bot-border);
+  border-radius:40px;padding:.45rem .45rem .45rem 1rem;transition:border-color .2s;
+}
+.bot-inp-row:focus-within{border-color:rgba(0,180,216,.45)}
+#bot-input{
+  flex:1;background:none;border:none;outline:none;color:var(--white);
+  font-family:'Poppins',sans-serif;font-size:.845rem;resize:none;max-height:110px;line-height:1.5;
+}
+#bot-input::placeholder{opacity:.3}
+#bot-send{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sky),var(--cyan));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:transform .2s,box-shadow .2s;
+}
+#bot-send:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(0,180,216,.45)}
+#bot-send:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.bot-foot{font-size:.6rem;opacity:.22;text-align:center;margin-top:.4rem}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr}.hero-orb{display:none}.hero-card{display:none}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .cases-grid{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr}.process-visual{display:none}
+  .testi-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid{grid-template-columns:1fr}
+  .stats-band{grid-template-columns:repeat(2,1fr)}
+  footer{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:.85rem 1.25rem}
+  .nav-links,.nav-right{display:none}
+  .hamburger{display:flex}
+  .hero{padding:5.5rem 1.25rem 4rem}
+  .section{padding:4.5rem 1.25rem}
+  .section-divider{margin:0 1.25rem}
+  .services-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .stats-band{padding:2.5rem 1.25rem;grid-template-columns:repeat(2,1fr)}
+  .cta-section{margin:0 1.25rem 4rem;padding:3rem 1.5rem}
+  footer{padding:2.5rem 1.25rem;grid-template-columns:1fr}
+  .ft-btm{padding:1.25rem;flex-direction:column;gap:.4rem;text-align:center}
+  #bot-panel{right:.75rem;width:calc(100vw - 1.5rem)}
+  #bot-launcher{right:1rem;bottom:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── MOBILE MENU ───────────────────────────────────────────── -->
+<div class="mob-menu" id="mob-menu">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#results" onclick="closeMob()">Results</a>
+  <a href="#process" onclick="closeMob()">Process</a>
+  <a href="#testimonials" onclick="closeMob()">Clients</a>
+  <a href="#pricing" onclick="closeMob()">Pricing</a>
+  <a href="#" onclick="closeMob();openBot()" class="btn-primary" style="font-size:.95rem;padding:.9rem 2rem">🤖 Chat with NexaBot</a>
+</div>
+
+<!-- ── NAVBAR ────────────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="data:image/png;base64,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" alt="TimesTag Logo"/>
+    <div class="nav-logo-text">
+      <span class="brand">TimesTag</span>
+      <span class="tagline">New Generation of Digital World</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#results">Results</a>
+    <a href="#process">Process</a>
+    <a href="#testimonials">Clients</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn outline" onclick="openBot()"><span class="ai-dot"></span>NexaBot AI</button>
+    <a href="#pricing" class="nav-btn solid">Get Started →</a>
+  </div>
+  <div class="hamburger" id="ham" onclick="toggleMob()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════ -->
+<div style="position:relative;overflow:hidden">
+  <div class="hero-orb"></div>
+  <!-- particles -->
+  <div class="particle" style="width:5px;height:5px;background:var(--cyan);opacity:.4;top:20%;left:15%;animation-delay:0s"></div>
+  <div class="particle" style="width:4px;height:4px;background:var(--gold);opacity:.35;top:60%;left:8%;animation-delay:-3s"></div>
+  <div class="particle" style="width:6px;height:6px;background:var(--cyan);opacity:.25;top:35%;left:60%;animation-delay:-5s"></div>
+  <div class="particle" style="width:3px;height:3px;background:var(--gold);opacity:.4;top:75%;left:45%;animation-delay:-2s"></div>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-badge"><span class="live"></span>Digital Marketing Agency · Ahmedabad</div>
+        <h1>Grow Your Brand<br>With <span class="accent">Digital</span><br><span class="gold">Excellence</span></h1>
+        <p class="hero-desc">TimesTag delivers data-driven SEO, social media, PPC, and brand strategy that transforms businesses into market leaders. New generation of digital marketing.</p>
+        <div class="hero-btns">
+          <a href="#pricing" class="btn-primary">Start Growing Today →</a>
+          <button class="btn-secondary" onclick="openBot()">🤖 Chat with NexaBot</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hs-val" id="c1">500+</div><div class="hs-lbl">Clients Served</div></div>
+          <div><div class="hs-val" id="c2">8+</div><div class="hs-lbl">Years Experience</div></div>
+          <div><div class="hs-val" id="c3">98%</div><div class="hs-lbl">Client Retention</div></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-card">
+          <div class="hc-header">
+            <div class="hc-av">📊</div>
+            <div><div class="hc-title">Campaign Dashboard</div><div class="hc-sub">TimesTag Analytics · Live</div></div>
+          </div>
+          <div class="hc-metrics">
+            <div class="hc-metric"><div class="hc-m-val">4.8x</div><div class="hc-m-lbl">Avg ROAS</div></div>
+            <div class="hc-metric"><div class="hc-m-val">+215%</div><div class="hc-m-lbl">Org. Traffic</div></div>
+            <div class="hc-metric"><div class="hc-m-val">-54%</div><div class="hc-m-lbl">Lead Cost</div></div>
+            <div class="hc-metric"><div class="hc-m-val">500+</div><div class="hc-m-lbl">Brands Scaled</div></div>
+          </div>
+          <div class="hc-bar-label"><span>SEO Performance</span><span style="color:var(--cyan)">92%</span></div>
+          <div class="hc-bar-bg"><div class="hc-bar-fill" style="width:92%"></div></div>
+          <div class="hc-bar-label" style="margin-top:.75rem"><span>Paid Ads ROI</span><span style="color:var(--cyan)">87%</span></div>
+          <div class="hc-bar-bg"><div class="hc-bar-fill" style="width:87%"></div></div>
+          <div class="hc-services">
+            <span class="hc-tag">SEO</span><span class="hc-tag">PPC</span><span class="hc-tag">Social</span><span class="hc-tag">Branding</span><span class="hc-tag">Web</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TICKER ─────────────────────────────────────────────────── -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SERVICES
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="services">
+  <div class="services-intro">
+    <div class="fu">
+      <div class="sec-label">What We Do</div>
+      <h2 class="sec-title">Full-Stack <span class="accent">Digital</span><br>Marketing Power</h2>
+    </div>
+    <div class="fu d2"><p class="sec-sub">Every channel, every strategy — built for Ahmedabad businesses and brands across India to dominate their digital landscape.</p></div>
+  </div>
+  <div class="services-grid fu d1">
+    <div class="svc">
+      <div class="svc-n">01</div><div class="svc-ico">🔍</div>
+      <div class="svc-name">SEO & Content Strategy</div>
+      <div class="svc-desc">Technical SEO, keyword architecture, authoritative content & link building that builds organic dominance over time.</div>
+      <div class="svc-chips"><span class="chip">Technical SEO</span><span class="chip">Content</span><span class="chip">Link Building</span></div>
+      <div class="svc-price"><span>From ₹15,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">02</div><div class="svc-ico">📱</div>
+      <div class="svc-name">Social Media Marketing</div>
+      <div class="svc-desc">Platform-native content, community management & paid social across Instagram, Facebook, LinkedIn & YouTube.</div>
+      <div class="svc-chips"><span class="chip">Instagram</span><span class="chip">Facebook</span><span class="chip">LinkedIn</span></div>
+      <div class="svc-price"><span>From ₹12,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">03</div><div class="svc-ico">⚡</div>
+      <div class="svc-name">PPC & Google Ads</div>
+      <div class="svc-desc">Google Ads, Meta Ads, programmatic display & retargeting campaigns engineered for maximum ROI and lowest CAC.</div>
+      <div class="svc-chips"><span class="chip">Google Ads</span><span class="chip">Meta Ads</span><span class="chip">Retargeting</span></div>
+      <div class="svc-price"><span>From ₹10,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">04</div><div class="svc-ico">✦</div>
+      <div class="svc-name">Branding & Identity</div>
+      <div class="svc-desc">Logo design, brand guidelines, visual identity systems & messaging frameworks that command premium market positioning.</div>
+      <div class="svc-chips"><span class="chip">Logo</span><span class="chip">Brand Guide</span><span class="chip">Positioning</span></div>
+      <div class="svc-price"><span>From ₹25,000 project</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">05</div><div class="svc-ico">🖥</div>
+      <div class="svc-name">Website Design & CRO</div>
+      <div class="svc-desc">Conversion-focused websites, landing pages, UX audits & A/B testing to turn every visitor into a customer.</div>
+      <div class="svc-chips"><span class="chip">Web Design</span><span class="chip">CRO</span><span class="chip">WordPress</span></div>
+      <div class="svc-price"><span>From ₹35,000 project</span><span class="svc-arr">→</span></div>
+    </div>
+    <div class="svc">
+      <div class="svc-n">06</div><div class="svc-ico">📊</div>
+      <div class="svc-name">Analytics & Growth</div>
+      <div class="svc-desc">GA4 setup, attribution modeling, custom dashboards & data-driven growth roadmaps for compounding ROI.</div>
+      <div class="svc-chips"><span class="chip">GA4</span><span class="chip">Attribution</span><span class="chip">Dashboards</span></div>
+      <div class="svc-price"><span>From ₹8,000/mo</span><span class="svc-arr">→</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS ──────────────────────────────────────────────────── -->
+<div class="stats-band">
+  <div class="sb-item fu"><div class="sb-val">500+</div><div class="sb-lbl">Clients Across India</div></div>
+  <div class="sb-item fu d1"><div class="sb-val">8+</div><div class="sb-lbl">Years of Excellence</div></div>
+  <div class="sb-item fu d2"><div class="sb-val">4.9★</div><div class="sb-lbl">Google Rating</div></div>
+  <div class="sb-item fu d3"><div class="sb-val">98%</div><div class="sb-lbl">Client Retention Rate</div></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CASE STUDIES
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="results">
+  <div class="fu"><div class="sec-label">Client Results</div><h2 class="sec-title">Real Results, <span class="accent">Real</span> Businesses</h2></div>
+  <div class="cases-grid">
+    <div class="case fu d1">
+      <div class="case-ind">🛒 E-Commerce · Fashion & Lifestyle</div>
+      <div class="case-title">Ahmedabad Boutique: 4x Online Sales</div>
+      <div class="case-desc">SEO + Google Shopping + Instagram Ads combo. Grew from ₹2L to ₹8L monthly revenue in 7 months with 4.2x ROAS on paid channels.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">4x</div><div class="cn-lbl">Sales Growth</div></div>
+        <div><div class="cn-val">4.2x</div><div class="cn-lbl">ROAS</div></div>
+        <div><div class="cn-val">7mo</div><div class="cn-lbl">Timeline</div></div>
+      </div>
+    </div>
+    <div class="case fu d2">
+      <div class="case-ind">💻 SaaS · B2B Technology</div>
+      <div class="case-title">Gujarat Tech Startup: 60% Lower CPL</div>
+      <div class="case-desc">LinkedIn ABM + content SEO + CRO on landing pages. Reduced cost-per-lead by 60% while tripling lead quality and MQL conversion rate.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">-60%</div><div class="cn-lbl">Lead Cost</div></div>
+        <div><div class="cn-val">3x</div><div class="cn-lbl">Lead Quality</div></div>
+        <div><div class="cn-val">180%</div><div class="cn-lbl">Pipeline Growth</div></div>
+      </div>
+    </div>
+    <div class="case fu d1">
+      <div class="case-ind">🏥 Healthcare · Clinics & Hospitals</div>
+      <div class="case-title">Multi-Clinic Chain: 5x Patient Bookings</div>
+      <div class="case-desc">Local SEO + Google Ads + reputation management. Grew monthly patient bookings 5x across 8 locations, #1 rankings for 90% of keywords.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">5x</div><div class="cn-lbl">Bookings</div></div>
+        <div><div class="cn-val">90%</div><div class="cn-lbl">Keywords #1</div></div>
+        <div><div class="cn-val">10mo</div><div class="cn-lbl">Timeline</div></div>
+      </div>
+    </div>
+    <div class="case fu d2">
+      <div class="case-ind">🏢 Real Estate · Residential Projects</div>
+      <div class="case-title">Builder Brand: ₹5Cr in Qualified Leads</div>
+      <div class="case-desc">Facebook/Instagram Ads + landing page CRO + WhatsApp automation. Generated over ₹5 crore in qualified buyer leads in a single quarter.</div>
+      <div class="case-nums">
+        <div><div class="cn-val">₹5Cr</div><div class="cn-lbl">Lead Pipeline</div></div>
+        <div><div class="cn-val">-45%</div><div class="cn-lbl">Cost per Lead</div></div>
+        <div><div class="cn-val">3mo</div><div class="cn-lbl">Timeline</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PROCESS
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="process">
+  <div class="fu"><div class="sec-label">How It Works</div><h2 class="sec-title">From Strategy<br>to <span class="accent">Dominance</span></h2></div>
+  <div class="process-grid">
+    <div class="process-steps fu d1">
+      <div class="pstep"><div class="ps-num">01</div><div><div class="ps-name">Discovery & Deep Audit</div><div class="ps-desc">We analyse your business, competitors, and current digital footprint to map every growth opportunity.</div></div></div>
+      <div class="pstep"><div class="ps-num">02</div><div><div class="ps-name">Custom Strategy Blueprint</div><div class="ps-desc">A tailored 90-day growth roadmap with channel mix, KPIs, content plan, and quick-win priorities.</div></div></div>
+      <div class="pstep"><div class="ps-num">03</div><div><div class="ps-name">Launch & Execute</div><div class="ps-desc">Our specialists launch campaigns across every channel — creative, copy, targeting, and automation all handled in-house.</div></div></div>
+      <div class="pstep"><div class="ps-num">04</div><div><div class="ps-name">Optimize & Scale</div><div class="ps-desc">Weekly reports, A/B testing, and iterative improvement. Results compound month over month.</div></div></div>
+    </div>
+    <div class="process-visual fu d2">
+      <div class="pv-head">Channel Performance · Client Average</div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,var(--sky),var(--cyan))">🔍</div><div class="pv-lbl">SEO</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:90%"></div></div><div class="pv-pct">90%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">⚡</div><div class="pv-lbl">PPC</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:94%"></div></div><div class="pv-pct">94%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,#e1306c,#f77737)">📱</div><div class="pv-lbl">Social</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:82%"></div></div><div class="pv-pct">82%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,#059669,#10b981)">📧</div><div class="pv-lbl">Email</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:88%"></div></div><div class="pv-pct">88%</div></div>
+      <div class="pv-row"><div class="pv-ic" style="background:linear-gradient(135deg,var(--gold),#e07b10)">✦</div><div class="pv-lbl">Branding</div><div class="pv-bar-w"><div class="pv-bar-f" style="width:96%"></div></div><div class="pv-pct">96%</div></div>
+      <div style="margin-top:1.4rem;padding-top:1.1rem;border-top:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:.65rem;opacity:.4;margin-bottom:.4rem">Overall Client Satisfaction</div>
+        <div style="display:flex;align-items:baseline;gap:.3rem">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:2.4rem;font-weight:700;color:var(--cyan)">4.9</div>
+          <div style="color:var(--gold);font-size:.9rem">★★★★★</div>
+          <div style="font-size:.68rem;opacity:.4">/ 5.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="testimonials">
+  <div class="fu"><div class="sec-label">What Clients Say</div><h2 class="sec-title">Trusted by <span class="accent">500+</span> Businesses</h2></div>
+  <div class="testi-grid">
+    <div class="tcard fu d1"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"TimesTag took our Ahmedabad boutique from ₹2L to ₹8L monthly in 7 months. Their Instagram + Google combo is unreal."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,var(--sky),var(--cyan))">RG</div><div><div class="tcard-name">Riya Gupta</div><div class="tcard-role">Owner, Silkwave Fashion</div></div></div></div>
+    <div class="tcard fu d2"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"Our lead cost dropped 60% and quality doubled. TimesTag doesn't run ads — they build growth systems. Best investment we made."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#0e6b5e,#12957f)">AP</div><div><div class="tcard-name">Arjun Patel</div><div class="tcard-role">CEO, TechEdge Solutions</div></div></div></div>
+    <div class="tcard fu d3"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"The rebrand changed everything. We went from being one of many to being THE digital agency people recommended in Gujarat."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">MS</div><div><div class="tcard-name">Meera Shah</div><div class="tcard-role">Director, Luminary Consulting</div></div></div></div>
+    <div class="tcard fu d1"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"5x patient bookings across 8 clinics in 10 months. Their local SEO knowledge is in a completely different league than anyone else."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#ef4444,#b91c1c)">DM</div><div><div class="tcard-name">Dr. Divya Mehta</div><div class="tcard-role">Medical Director, HealthFirst</div></div></div></div>
+    <div class="tcard fu d2"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"Generated ₹5Cr in qualified real estate leads in one quarter. The WhatsApp automation alone saved my sales team 20 hours a week."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,var(--gold),#e07b10)">VJ</div><div><div class="tcard-name">Vivek Joshi</div><div class="tcard-role">MD, SkyLine Properties</div></div></div></div>
+    <div class="tcard fu d3"><div class="tcard-stars">★★★★★</div><div class="tcard-q">"The NexaBot AI chatbot alone generated 12 leads in the first week. TimesTag thinks ahead — they bring solutions before you know you need them."</div><div class="tcard-auth"><div class="tcard-av" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">NK</div><div><div class="tcard-name">Neha Kapoor</div><div class="tcard-role">Founder, BloomBrand Studio</div></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PRICING
+═══════════════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="pricing">
+  <div class="fu" style="text-align:center;max-width:560px;margin:0 auto 3rem">
+    <div class="sec-label">Transparent Pricing</div>
+    <h2 class="sec-title">Plans That <span class="accent">Scale</span> With You</h2>
+    <p class="sec-sub" style="margin:0 auto">Every plan includes a dedicated account manager, monthly reporting & access to our full specialist team.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pc fu d1">
+      <div class="pc-tier">Starter</div>
+      <div class="pc-name">Foundation</div>
+      <div class="pc-price"><span class="pc-curr">₹</span><span class="pc-num">15,000</span><span class="pc-per">/month</span></div>
+      <div class="pc-feats">
+        <div class="pf"><span class="pf-ic">✦</span>SEO audit + on-page optimization</div>
+        <div class="pf"><span class="pf-ic">✦</span>2 social media platforms</div>
+        <div class="pf"><span class="pf-ic">✦</span>Monthly performance report</div>
+        <div class="pf"><span class="pf-ic">✦</span>4 content pieces per month</div>
+        <div class="pf"><span class="pf-ic">✦</span>Dedicated account manager</div>
+        <div class="pf"><span class="pf-ic">✦</span>Basic Google Ads setup</div>
+      </div>
+      <button class="pc-btn out" onclick="openBot()">Get Started →</button>
+    </div>
+    <div class="pc feat fu d2">
+      <div class="pc-badge">Most Popular</div>
+      <div class="pc-tier">Growth</div>
+      <div class="pc-name">Accelerator</div>
+      <div class="pc-price"><span class="pc-curr">₹</span><span class="pc-num">35,000</span><span class="pc-per">/month</span></div>
+      <div class="pc-feats">
+        <div class="pf"><span class="pf-ic">✦</span>Full SEO + content strategy</div>
+        <div class="pf"><span class="pf-ic">✦</span>PPC up to ₹2L ad spend managed</div>
+        <div class="pf"><span class="pf-ic">✦</span>4 platforms + paid social</div>
+        <div class="pf"><span class="pf-ic">✦</span>12 content pieces + 2 landing pages</div>
+        <div class="pf"><span class="pf-ic">✦</span>Weekly reports + strategy calls</div>
+        <div class="pf"><span class="pf-ic">✦</span>WhatsApp marketing automation</div>
+        <div class="pf"><span class="pf-ic">✦</span>CRO testing program</div>
+      </div>
+      <button class="pc-btn sol" onclick="openBot()">Get Started →</button>
+    </div>
+    <div class="pc fu d3">
+      <div class="pc-tier">Enterprise</div>
+      <div class="pc-name">Dominator</div>
+      <div class="pc-price"><span class="pc-curr">₹</span><span class="pc-num">75,000</span><span class="pc-per">/month</span></div>
+      <div class="pc-feats">
+        <div class="pf"><span class="pf-ic">✦</span>Everything in Accelerator</div>
+        <div class="pf"><span class="pf-ic">✦</span>Unlimited ad spend management</div>
+        <div class="pf"><span class="pf-ic">✦</span>Full brand identity refresh</div>
+        <div class="pf"><span class="pf-ic">✦</span>Custom website design & dev</div>
+        <div class="pf"><span class="pf-ic">✦</span>Dedicated creative team</div>
+        <div class="pf"><span class="pf-ic">✦</span>Advanced analytics & attribution</div>
+        <div class="pf"><span class="pf-ic">✦</span>Priority support + exec sessions</div>
+      </div>
+      <button class="pc-btn out" onclick="openBot()">Talk to Us →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA BAND ────────────────────────────────────────────────── -->
+<div class="cta-section fu">
+  <h2 class="cta-title">Ready to <span style="color:var(--cyan)">Dominate</span><br>Your Market?</h2>
+  <p class="cta-sub">Free 30-minute strategy session. No pitch. Just honest advice on your biggest growth opportunity.</p>
+  <div class="cta-btns">
+    <a href="tel:+919999999999" class="btn-primary">📞 Call Us Now</a>
+    <button class="btn-secondary" onclick="openBot()">🤖 Chat with NexaBot</button>
+    <a href="https://wa.me/919999999999" class="btn-primary" style="background:linear-gradient(135deg,#25d366,#128c7e)">💬 WhatsApp Us</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="ft-brand">
+    <img src="data:image/png;base64,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" alt="TimesTag"/>
+    <p>Ahmedabad's leading digital marketing agency. We help Indian businesses grow through data-driven strategy, creative execution, and AI-powered marketing.</p>
+  </div>
+  <div class="ft-col"><h4>Services</h4><a href="#">SEO & Content</a><a href="#">Social Media</a><a href="#">PPC & Google Ads</a><a href="#">Branding</a><a href="#">Web Design</a><a href="#">Analytics</a></div>
+  <div class="ft-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Case Studies</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Contact</a></div>
+  <div class="ft-col"><h4>Contact</h4><a href="#">📧 <span class="__cf_email__" data-cfemail="91f9f4fdfdfed1e5f8fcf4e2e5f0f6bff8ff">[email&#160;protected]</span></a><a href="#">📞 +91 99999 99999</a><a href="#">📍 Ahmedabad, Gujarat</a><a href="#">💬 WhatsApp Us</a></div>
+</footer>
+<div class="ft-btm">
+  <span>© 2025 TimesTag Digital Marketing. All rights reserved.</span>
+  <span>New Generation of Digital World · Made with ❤️ in Ahmedabad</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     NEXABOT — AI AGENT WIDGET
+═══════════════════════════════════════════════════ -->
+<button id="bot-launcher" onclick="toggleBot()" aria-label="NexaBot AI">
+  <div class="bot-ring"></div>
+  <span class="bot-badge" id="bot-badge">1</span>
+  <svg id="lnch-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg id="lnch-cls" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+
+<div id="bot-panel" role="dialog">
+  <!-- Header -->
+  <div class="bot-hd">
+    <div class="bot-av">🤖<div class="bot-online"></div></div>
+    <div class="bot-hd-info">
+      <div class="bot-hd-name">NexaBot · TimesTag AI</div>
+      <div class="bot-hd-sub" id="bot-mode-label">Digital Marketing Assistant · Online</div>
+    </div>
+    <div class="bot-hd-btns">
+      <button class="bot-icon-btn" onclick="clearBot()" title="Clear">↺</button>
+      <button class="bot-icon-btn" onclick="toggleBot()">✕</button>
+    </div>
+  </div>
+
+  <!-- Mode selector -->
+  <div class="mode-bar">
+    <button class="mode-btn active" onclick="setMode('marketing','📈 Marketing Consultant','btn-marketing')">📈 Marketing</button>
+    <button class="mode-btn" onclick="setMode('sales','💼 Sales Assistant','btn-sales')">💼 Sales</button>
+    <button class="mode-btn" onclick="setMode('seo','🔍 SEO Expert','btn-seo')">🔍 SEO</button>
+    <button class="mode-btn" onclick="setMode('social','📱 Social Media','btn-social')">📱 Social</button>
+    <button class="mode-btn" onclick="setMode('support','🛠 Support','btn-support')">🛠 Support</button>
+  </div>
+
+  <!-- Optional API Upgrade Bar (hidden by default) -->
+  <div class="api-strip" id="api-strip" style="display:none">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <input type="password" id="api-input" placeholder="Optional: Paste Gemini API key to unlock advanced AI answers…"/>
+    <button class="api-go" onclick="saveKey()">Upgrade ✓</button>
+  </div>
+
+  <!-- Messages -->
+  <div id="bot-msgs"></div>
+
+  <!-- Quick chips -->
+  <div class="qchips" id="qchips">
+    <button class="qchip" onclick="sendChip('What digital marketing services do you offer?')">Services</button>
+    <button class="qchip" onclick="sendChip('What are your pricing plans in INR?')">Pricing ₹</button>
+    <button class="qchip" onclick="sendChip('Give me 5 quick SEO tips for my business')">SEO Tips</button>
+    <button class="qchip" onclick="sendChip('How to grow on Instagram in 2025?')">Instagram Growth</button>
+    <button class="qchip" onclick="sendChip('I want to book a free strategy call')">Book a Call</button>
+  </div>
+
+  <!-- Input -->
+  <div class="bot-inp-area">
+    <div class="bot-inp-row">
+      <textarea id="bot-input" placeholder="Ask NexaBot anything about digital marketing…" rows="1"></textarea>
+      <button id="bot-send" onclick="sendMsg()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="bot-foot">NexaBot · Powered by Google Gemini · TimesTag Digital Marketing</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── NAV SCROLL ───────────────────────────────── */
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
+
+/* ── MOBILE MENU ──────────────────────────────── */
+function toggleMob(){const h=document.getElementById('ham'),m=document.getElementById('mob-menu');h.classList.toggle('active');m.classList.toggle('open')}
+function closeMob(){document.getElementById('ham').classList.remove('active');document.getElementById('mob-menu').classList.remove('open')}
+
+/* ── FADE-UP ──────────────────────────────────── */
+const fobs=new IntersectionObserver(els=>els.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')}),{threshold:.1});
+document.querySelectorAll('.fu').forEach(e=>fobs.observe(e));
+
+/* ── TICKER ───────────────────────────────────── */
+const tItems=['SEO Optimisation','Social Media','Google Ads','Brand Strategy','Web Design','Content Marketing','Email Marketing','Analytics','Lead Generation','WhatsApp Marketing'];
+const tr=document.getElementById('ticker');
+[...tItems,...tItems].forEach(t=>{const d=document.createElement('div');d.className='ticker-item';d.innerHTML=`${t}<span class="ticker-sep">✦</span>`;tr.appendChild(d)});
+
+/* ── COUNTER ANIM ─────────────────────────────── */
+const cobs=new IntersectionObserver(els=>{
+  els.forEach(el=>{if(el.isIntersecting&&!el.dataset.done){
+    el.dataset.done='1';
+    const raw=el.textContent;const num=parseFloat(raw.replace(/[^0-9.]/g,''));const suf=raw.replace(/[0-9.]/g,'');
+    let n=0;const step=num/55;const t=setInterval(()=>{n=Math.min(n+step,num);el.textContent=Number.isInteger(num)?Math.floor(n)+suf:n.toFixed(1)+suf;if(n>=num)clearInterval(t)},18);
+  }});
+},{threshold:.5});
+document.querySelectorAll('.sb-val,.hs-val,.case-metric-val,.cn-val').forEach(e=>cobs.observe(e));
+
+/* ══════════════════════════════════════════════════
+   NEXABOT — SMART OFFLINE-FIRST AI AGENT
+   Works 100% without any API key using built-in
+   knowledge. Gemini API is optional for advanced Qs.
+══════════════════════════════════════════════════ */
+let botOpen=false,botLoading=false,botHistory=[],botGreeted=false;
+let GKEY=localStorage.getItem('tt_gemini_key')||'';
+let currentMode='marketing';
+let leadData={};
+
+/* ════════════════════════════════════════════════
+   BUILT-IN KNOWLEDGE BASE — answers without API
+════════════════════════════════════════════════ */
+const KB = [
+  /* ── About TimesTag ── */
+  {
+    keys:['who are you','what is timestag','about timestag','about you','tell me about','company','agency','who is'],
+    answer:`👋 **TimesTag** is Ahmedabad's leading digital marketing agency!\n\n🏢 Based in Ahmedabad, Gujarat, India\n📅 8+ years of experience\n👥 500+ happy clients across India\n⭐ 4.9★ Google rating | 98% client retention\n\nWe specialise in SEO, Social Media, Google Ads, Branding, Web Design & WhatsApp Marketing — helping Indian businesses grow and dominate their market.\n\nWhat can we help you grow today? 🚀`
+  },
+  /* ── Services overview ── */
+  {
+    keys:['services','what do you do','what do you offer','offerings','what can you do','help me with','solutions'],
+    answer:`🚀 **TimesTag Full Services:**\n\n🔍 **SEO & Content** — Rank on Google, drive organic traffic (From ₹15,000/mo)\n📱 **Social Media Marketing** — Instagram, Facebook, LinkedIn, YouTube (From ₹12,000/mo)\n⚡ **PPC & Google Ads** — Maximum ROI on paid campaigns (From ₹10,000/mo)\n✦ **Branding & Identity** — Logo, brand guidelines, positioning (From ₹25,000)\n🖥 **Website Design & CRO** — Conversion-focused websites (From ₹35,000)\n📊 **Analytics & Growth** — GA4, dashboards, strategy (From ₹8,000/mo)\n💬 **WhatsApp Marketing** — Automation & campaigns\n\nWhich service interests you most?`
+  },
+  /* ── Pricing ── */
+  {
+    keys:['price','pricing','cost','how much','charges','fee','package','plan','budget','rate','tariff','₹'],
+    answer:`💰 **TimesTag Pricing Plans:**\n\n🟢 **Foundation — ₹15,000/month**\n• SEO + 2 social platforms + 4 content pieces + Google Ads setup\n• Best for: Startups & small businesses\n\n🔵 **Accelerator — ₹35,000/month** ⭐ Most Popular\n• Full SEO + PPC (up to ₹2L ad spend) + 4 platforms + WhatsApp automation + CRO\n• Best for: Growing businesses\n\n🟣 **Dominator — ₹75,000/month**\n• Everything + unlimited ads + website design + dedicated creative team\n• Best for: Enterprise & large brands\n\n🎨 **One-time Projects:**\n• Website Design: From ₹35,000\n• Branding/Logo: From ₹25,000\n\n📞 Want a custom quote? Call/WhatsApp: **+91-99999-99999**\nWould you like to tell me about your business so I can recommend the right plan?`
+  },
+  /* ── SEO tips ── */
+  {
+    keys:['seo tip','seo advice','improve seo','seo strategy','rank on google','google ranking','organic traffic','keyword','backlink','on page','off page','technical seo','local seo'],
+    answer:`🔍 **Top SEO Tips for Indian Businesses:**\n\n**1. Google Business Profile** 📍\nClaim & optimise your GBP listing — most important for local businesses in Ahmedabad/India. Add photos, services, posts weekly.\n\n**2. Target Long-tail Hindi/Regional Keywords** 🇮🇳\nE.g. "digital marketing agency ahmedabad" not just "digital marketing"\n\n**3. Mobile-First Always** 📱\n70%+ of Indian searches are on mobile. Fast loading = better rankings.\n\n**4. Core Web Vitals** ⚡\nGoogle scores your site speed. Use PageSpeed Insights to check.\n\n**5. Content in Local Language** ✍️\nBlog posts in Gujarati or Hindi can capture huge untapped search volume.\n\n**6. Quality Backlinks** 🔗\nGet listed on Justdial, Sulekha, IndiaMart + local news sites.\n\n**7. Schema Markup** 🏷️\nAdd structured data for rich snippets in search results.\n\nWant TimesTag's SEO team to audit your website for free? 👉 Call **+91-99999-99999**`
+  },
+  /* ── Social media tips ── */
+  {
+    keys:['social media','instagram','facebook','linkedin','youtube','reels','hashtag','followers','engagement','content','post','viral','influencer','whatsapp'],
+    answer:`📱 **Social Media Growth Tips for Indian Brands:**\n\n**Instagram 📸**\n• Post 4-5 Reels/week — Reels get 3x more reach than photos\n• Use 5-10 niche hashtags (not 30 generic ones)\n• Best posting times in India: 7-9 AM, 12-1 PM, 8-10 PM\n\n**Facebook 👍**\n• Facebook Groups drive massive organic reach in India\n• Video content gets 5x engagement vs text posts\n• Run lead generation ads targeting pin codes in your city\n\n**LinkedIn 💼**\n• Post founder stories & behind-the-scenes content\n• B2B businesses get best quality leads from LinkedIn\n• Comment on big industry posts daily for visibility\n\n**WhatsApp Business 💬**\n• Set up automated welcome & follow-up messages\n• Broadcast lists for promotions (way better open rates than email)\n• WhatsApp catalogue for product businesses\n\n**YouTube 🎬**\n• 1 long video/week + 3 YouTube Shorts\n• Hindi/Gujarati content ranks faster with less competition\n\nTimesTag manages all platforms for you! Interested in our Social Media package?`
+  },
+  /* ── Google Ads / PPC ── */
+  {
+    keys:['google ads','ppc','paid ads','facebook ads','meta ads','advertising','campaign','roas','cpc','cpa','ad spend','paid search','sem'],
+    answer:`⚡ **Google & Meta Ads Tips:**\n\n**Google Ads 🔍**\n• Start with Search Ads — highest purchase intent\n• Use exact & phrase match keywords, not broad match\n• Always run retargeting campaigns (10x cheaper conversions)\n• Google Shopping Ads are must for e-commerce\n• Target by pin code for local businesses\n\n**Meta (Facebook/Instagram) Ads 📱**\n• Advantage+ campaigns work great for Indian audiences\n• Use WhatsApp Click-to-Chat ads — massive in India\n• Video ads (15-30 sec) outperform image ads 3:1\n• Lookalike audiences from your customer list = gold\n\n**Average Results We Achieve:**\n• E-commerce: 4-5x ROAS\n• Lead gen: ₹50-200 per lead (industry dependent)\n• Local services: 5-10x return\n\n**Budget Recommendation:**\n• Minimum ₹10,000/month ad spend to see real results\n• Our management fee: From ₹10,000/month\n\nWant us to audit your existing campaigns or set up new ones?`
+  },
+  /* ── Branding ── */
+  {
+    keys:['brand','branding','logo','identity','design','visual','tagline','positioning','rebranding'],
+    answer:`✦ **Branding & Identity Services:**\n\n🎨 **What TimesTag Creates:**\n• Professional logo design (3-5 concepts)\n• Complete brand guidelines document\n• Color palette & typography system\n• Business card, letterhead, social media templates\n• Brand voice & messaging framework\n• Website visual design\n\n**Why Branding Matters:**\n• Strong brands command 20-30% price premium\n• Consistent branding increases revenue by 33%\n• First impressions happen in 0.05 seconds\n\n**Our Branding Packages:**\n• Logo Only: From ₹10,000\n• Logo + Brand Guide: From ₹25,000\n• Full Brand Identity: From ₹45,000\n• Website + Brand: From ₹70,000\n\nOur Ahmedabad-based design team has created brands for 100+ Indian businesses. Want to see our portfolio? Call **+91-99999-99999**`
+  },
+  /* ── Website ── */
+  {
+    keys:['website','web design','web development','landing page','wordpress','ecommerce','woocommerce','shopify','cro','conversion','ux'],
+    answer:`🖥 **Website Design & Development:**\n\n**What We Build:**\n• Business websites (5-15 pages)\n• E-commerce stores (WooCommerce/Shopify)\n• Landing pages for lead generation\n• Portfolio & service websites\n• Booking & appointment systems\n\n**Our Process:**\n1. Discovery & wireframing (Week 1)\n2. Design mockups (Week 2)\n3. Development (Week 3-4)\n4. Testing & launch (Week 5)\n\n**Pricing:**\n• Simple Business Site (5 pages): ₹35,000–₹60,000\n• E-commerce Store: ₹60,000–₹1,50,000\n• Custom Web App: ₹1,50,000+\n• Landing Page: ₹15,000–₹25,000\n\n**All sites include:**\n✅ Mobile responsive design\n✅ SEO optimisation\n✅ Fast loading (Core Web Vitals)\n✅ SSL certificate\n✅ 3 months free support\n\nShare your requirements and we'll give you an exact quote! 📞 **+91-99999-99999**`
+  },
+  /* ── WhatsApp Marketing ── */
+  {
+    keys:['whatsapp','whatsapp marketing','whatsapp business','whatsapp automation','broadcast','chatbot'],
+    answer:`💬 **WhatsApp Marketing for Indian Businesses:**\n\nWhatsApp has 500M+ users in India — it's the highest ROI marketing channel!\n\n**What TimesTag Sets Up:**\n• WhatsApp Business API integration\n• Automated welcome messages\n• Follow-up sequences for leads\n• Broadcast campaigns to customer lists\n• Catalogue setup for products\n• Click-to-WhatsApp Facebook/Instagram ads\n• Chatbot for common queries\n\n**Results Our Clients See:**\n• 80-95% message open rate (vs 20% email)\n• 5-10x more responses than email\n• 40% reduction in customer support time\n\n**Pricing:** Included in Accelerator & Dominator plans, or standalone from ₹8,000/month\n\nWant to automate your WhatsApp for leads & sales? Let's talk! 📞 **+91-99999-99999**`
+  },
+  /* ── Contact ── */
+  {
+    keys:['contact','phone','call','email','address','location','office','reach','talk to','speak','meet','visit','ahmedabad','gujarat'],
+    answer:`📞 **Contact TimesTag:**\n\n📱 **Call/WhatsApp:** +91-99999-99999\n📧 **Email:** hello@timestag.in\n📍 **Office:** Ahmedabad, Gujarat, India\n🕐 **Hours:** Mon–Sat, 9:00 AM – 7:00 PM IST\n\n💬 **Quickest way to reach us:** WhatsApp us!\n\n🎯 **Book a FREE 30-minute Strategy Call** — no pitch, just honest advice on your biggest marketing opportunity.\n\nOur team typically responds within 1 hour during business hours. How can we help you today?`
+  },
+  /* ── Book a call ── */
+  {
+    keys:['book','appointment','meeting','strategy call','consultation','free call','demo','schedule','free'],
+    answer:`📅 **Book Your FREE Strategy Call:**\n\nHere's what you get in a FREE 30-minute session with TimesTag:\n\n✅ Full audit of your current marketing\n✅ Competitor analysis snapshot\n✅ Top 3 growth opportunities identified\n✅ Custom strategy recommendation\n✅ Clear roadmap with expected ROI\n\n**No pitch. No pressure. Just genuine expert advice.**\n\n📞 Call/WhatsApp: **+91-99999-99999**\n📧 Email: **hello@timestag.in**\n\nTo get started, just share:\n• Your name\n• Your business type\n• Best time to call\n\nShall I collect your details now so our team can reach out? 😊`
+  },
+  /* ── Results / case studies ── */
+  {
+    keys:['result','case study','success','client','portfolio','proof','example','roi','return','achievement','growth'],
+    answer:`📈 **TimesTag Client Results:**\n\n🛒 **Ahmedabad Fashion Boutique**\n• ₹2L → ₹8L monthly revenue in 7 months\n• 4.2x ROAS on Google + Instagram Ads\n\n💻 **Gujarat Tech Startup (SaaS)**\n• 60% reduction in cost-per-lead\n• 3x improvement in lead quality\n• 180% pipeline growth\n\n🏥 **Multi-Clinic Healthcare Chain**\n• 5x patient bookings across 8 locations\n• #1 Google ranking for 90% of keywords\n• 10-month timeline\n\n🏢 **Real Estate Developer**\n• ₹5 Crore qualified lead pipeline in 1 quarter\n• 45% lower cost per lead\n• WhatsApp automation saved 20 hrs/week for sales team\n\n**Overall Track Record:**\n• 500+ clients served across India\n• Average 3-5x ROI on marketing investment\n• 4.9★ Google rating\n\nWant results like these for YOUR business? Let's talk! 📞 **+91-99999-99999**`
+  },
+  /* ── Email marketing ── */
+  {
+    keys:['email marketing','email','newsletter','email campaign','drip','automation','mailchimp','klaviyo'],
+    answer:`📧 **Email Marketing Tips & Services:**\n\n**Why Email Still Works in India:**\n• ₹42 ROI for every ₹1 spent (highest of all channels)\n• 4 billion email users globally\n• You OWN your list — no algorithm changes\n\n**TimesTag Email Services:**\n• Email strategy & campaign design\n• Welcome sequences & drip campaigns\n• Newsletter management\n• Abandoned cart recovery (for e-commerce)\n• Lead nurturing workflows\n• Platform setup: Mailchimp, Klaviyo, Zoho\n\n**Best Practices:**\n• Subject line = 50% of your open rate\n• Personalise with recipient's first name\n• Send Tuesday–Thursday, 10 AM or 3 PM\n• Mobile-optimised templates essential\n• Clean your list every 6 months\n\nIncluded in Accelerator & Dominator plans. Standalone from ₹6,000/month.\n\nNeed help with your email marketing?`
+  },
+  /* ── Digital marketing tips general ── */
+  {
+    keys:['digital marketing','online marketing','marketing tips','marketing strategy','grow business','grow online','increase sales','more customers','lead generation','leads'],
+    answer:`💡 **Top Digital Marketing Tips for Indian Businesses:**\n\n**Quick Wins (Do This Week):**\n1. 📍 Optimise your Google Business Profile — get free local traffic\n2. 📱 Post 3 Reels on Instagram this week\n3. ⭐ Ask 5 happy customers for Google reviews\n4. 🖥 Check your website speed on PageSpeed Insights\n5. 💬 Set up WhatsApp Business with auto-reply\n\n**Medium Term (1-3 Months):**\n• Start a blog targeting local keywords\n• Run ₹5,000 test campaign on Google Ads\n• Build email list with a free lead magnet\n• Create a referral program for existing customers\n\n**Long Term (3-12 Months):**\n• SEO compounds — invest early, reap long-term\n• Build YouTube channel in your niche\n• Develop brand authority with PR & thought leadership\n\n**TimesTag's average client sees 3-5x ROI within 6 months.**\n\nWant a personalised strategy for YOUR business? What industry are you in? 🎯`
+  },
+  /* ── Competitor / compare ── */
+  {
+    keys:['competitor','competition','compare','vs','other agency','better than','why choose','why timestag','difference'],
+    answer:`🏆 **Why Choose TimesTag?**\n\n**vs Other Agencies:**\n\n✅ **Transparent Pricing** — No hidden charges, everything upfront in INR\n✅ **Dedicated Account Manager** — One point of contact, always available\n✅ **Weekly Reports** — Know exactly what we're doing and why\n✅ **Indian Market Expertise** — We understand Ahmedabad & India audiences\n✅ **Full-Stack Team** — SEO + Social + PPC + Design under one roof\n✅ **Proven Results** — 500+ clients, 4.9★ Google rating\n✅ **No Lock-in Contracts** — Month-to-month, earn your trust every month\n\n**What We DON'T Do:**\n❌ Vanity metrics (fake followers, junk traffic)\n❌ One-size-fits-all packages\n❌ Disappear after signing the contract\n\n📞 Talk to us before deciding: **+91-99999-99999**\nWe'll give you an honest assessment — even if we're not the right fit!`
+  },
+  /* ── Hello / greetings ── */
+  {
+    keys:['hi','hello','hey','namaste','good morning','good afternoon','good evening','hii','helo','hola','sup','yo'],
+    answer:`👋 **Namaste! Hello there!**\n\nI'm **NexaBot**, TimesTag's AI marketing assistant! 🤖\n\nI can instantly help you with:\n• 🔍 SEO tips & strategy\n• 📱 Social media growth advice\n• ⚡ Google Ads & PPC guidance\n• 💰 Our pricing & packages\n• 📞 Booking a free strategy call\n• ✦ Branding & web design info\n\n🇮🇳 Proudly serving Ahmedabad & businesses across India!\n\nWhat would you like to know? Just ask me anything! 😊`
+  },
+  /* ── Thank you ── */
+  {
+    keys:['thank','thanks','thankyou','thank you','great','awesome','perfect','good','nice','helpful'],
+    answer:`😊 You're very welcome! Happy to help!\n\nIs there anything else you'd like to know about TimesTag's services or digital marketing in general?\n\n📞 When you're ready to take the next step: **+91-99999-99999**\n📧 Or email us: **hello@timestag.in**\n\nWe offer a **FREE 30-minute strategy call** — no strings attached! 🎯`
+  },
+];
+
+/* ════════════════════════════════════════════════
+   SMART OFFLINE RESPONSE ENGINE
+   Matches user query against knowledge base
+════════════════════════════════════════════════ */
+function getOfflineAnswer(query){
+  const q = query.toLowerCase().replace(/[?!.,]/g,'');
+  const words = q.split(/\s+/);
+  
+  // Score each KB entry
+  let best = null, bestScore = 0;
+  for(const entry of KB){
+    let score = 0;
+    for(const key of entry.keys){
+      if(q.includes(key)) score += key.split(' ').length * 3; // multi-word match = higher score
+      else for(const w of words){ if(key.includes(w) && w.length > 2) score += 1; }
+    }
+    if(score > bestScore){ bestScore = score; best = entry; }
+  }
+  
+  return bestScore >= 2 ? best.answer : null;
+}
+
+/* Fallback suggestions when nothing matches */
+function getSuggestionAnswer(query){
+  return `🤔 That's a great question! Here's what I can tell you:\n\nFor your query about "**${query}**", I'd recommend speaking directly with our marketing experts who can give you a personalised answer.\n\n📞 **Call/WhatsApp TimesTag:** +91-99999-99999\n📧 **Email:** hello@timestag.in\n🕐 Response within 1 hour (Mon–Sat, 9 AM–7 PM IST)\n\n**Or ask me about:**\n• Our services & pricing 💰\n• SEO tips & strategy 🔍\n• Social media growth 📱\n• Google Ads advice ⚡\n• Branding & web design ✦\n• Booking a free call 📅\n\nWhat else can I help you with?`;
+}
+
+/* ════════════════════════════════════════════════
+   GEMINI API — OPTIONAL UPGRADE FOR ADVANCED Qs
+════════════════════════════════════════════════ */
+const SYSTEM_PROMPTS={
+  marketing:`You are NexaBot, the AI marketing consultant for TimesTag — Ahmedabad's leading digital marketing agency. You are warm, expert, and results-focused.\n\nABOUT TIMESTAG: Based in Ahmedabad, Gujarat, India. 500+ clients served. 8+ years experience. Services: SEO, Social Media, PPC/Google Ads, Branding, Web Design, Analytics, WhatsApp Marketing. Pricing: Foundation ₹15,000/mo | Accelerator ₹35,000/mo | Dominator ₹75,000/mo. Contact: +91-99999-99999 | hello@timestag.in\n\nBEHAVIOR: Be conversational, warm, give specific actionable tips for Indian businesses. Reference Ahmedabad/Gujarat/India context. Always end with a question or CTA. Use occasional emojis.\n\nLEAD CAPTURE: When someone asks about pricing or hiring, naturally collect: name, WhatsApp/email, business type, budget, main goal. Once all 5 collected, append on its own line: LEAD_CAPTURED:{"name":"...","contact":"...","business":"...","budget":"...","goal":"..."}`,
+  sales:`You are NexaBot in Sales mode for TimesTag, Ahmedabad. Help qualify prospects. Be consultative, ask discovery questions, move toward booking a free strategy call at +91-99999-99999.`,
+  seo:`You are NexaBot in SEO Expert mode for TimesTag. Give deep, actionable SEO advice for Indian businesses. Cover: technical SEO, local SEO for India, content strategy, backlinks, Core Web Vitals, E-E-A-T, Google Business Profile.`,
+  social:`You are NexaBot in Social Media mode for TimesTag. Expert on Instagram, Facebook, LinkedIn, YouTube & WhatsApp marketing for Indian brands. Include India-specific tips, regional language content, WhatsApp Business automation.`,
+  support:`You are NexaBot in Support mode for TimesTag. Help clients with campaign questions, reports, account queries. For urgent issues direct to hello@timestag.in or +91-99999-99999.`
+};
+
+/* ══════════════════════════════════════════════════
+   NEXABOT UI CONTROLLER
+══════════════════════════════════════════════════ */
+function toggleBot(){botOpen?closeBot():openBot()}
+function openBot(){
+  botOpen=true;
+  document.getElementById('bot-panel').classList.add('open');
+  document.getElementById('bot-badge').style.display='none';
+  document.getElementById('lnch-open').style.display='none';
+  document.getElementById('lnch-cls').style.display='block';
+  document.getElementById('bot-input').focus();
+  if(!botGreeted){botGreeted=true;setTimeout(greetBot,450)}
+}
+function closeBot(){
+  botOpen=false;
+  document.getElementById('bot-panel').classList.remove('open');
+  document.getElementById('lnch-open').style.display='block';
+  document.getElementById('lnch-cls').style.display='none';
+}
+function clearBot(){botHistory=[];botGreeted=false;leadData={};document.getElementById('bot-msgs').innerHTML='';document.getElementById('qchips').style.display='flex';setTimeout(greetBot,300)}
+
+function saveKey(){
+  const k=document.getElementById('api-input').value.trim();
+  if(!k){alert('Please paste your Gemini API key first.');return}
+  GKEY=k;localStorage.setItem('tt_gemini_key',k);
+  document.getElementById('api-strip').style.display='none';
+  addBotMsg('✅ **Gemini AI unlocked!** NexaBot now has enhanced AI capabilities for complex questions.\n\nHow can I help you today?');
+}
+
+function setMode(mode,label){
+  currentMode=mode;
+  document.getElementById('bot-mode-label').textContent=label+' · Online';
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  botHistory=[];
+  document.getElementById('bot-msgs').innerHTML='';
+  const modeGreets={
+    marketing:"📈 Switched to **Marketing Consultant** mode.\n\nI can help with SEO, social media, PPC, branding and overall digital strategy — no API key needed! What's your biggest marketing challenge?",
+    sales:"💼 Switched to **Sales Assistant** mode.\n\nI'm here to help you understand how TimesTag can grow your business. What type of business do you run?",
+    seo:"🔍 Switched to **SEO Expert** mode.\n\nI can help with technical SEO, local SEO, content strategy and Google rankings. What SEO challenge can I solve for you?",
+    social:"📱 Switched to **Social Media** mode.\n\nInstagram, Facebook, LinkedIn, YouTube, WhatsApp — I've got you covered. What platform do you want to grow on?",
+    support:"🛠 Switched to **Support** mode.\n\nI'm here to help with any questions about TimesTag campaigns or services. What do you need help with?"
+  };
+  addBotMsg(modeGreets[mode]);
+}
+
+function greetBot(){
+  addBotMsg("👋 **Namaste! I'm NexaBot**, TimesTag's AI marketing assistant!\n\n✅ I can answer your questions **right now** — no signup or API key needed!\n\nAsk me about:\n• Our services & pricing 💰\n• SEO tips for your business 🔍\n• Social media growth strategy 📱\n• Google Ads & PPC advice ⚡\n• Booking a FREE strategy call 📅\n\n🇮🇳 Helping businesses across Ahmedabad & India grow digitally!\n\nWhat would you like to know? 😊");
+}
+setTimeout(()=>{if(!botOpen)document.getElementById('bot-badge').style.display='flex'},8000);
+
+/* ── MESSAGES ─────────────────────────────────── */
+function addUserBotMsg(t){
+  botHistory.push({role:'user',content:t});
+  const m=document.getElementById('bot-msgs');
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const r=document.createElement('div');r.className='mrow user';
+  r.innerHTML=`<span class="mtime">${time}</span><div class="mbbl user">${esc(t)}</div>`;
+  m.appendChild(r);s2b();
+}
+function addBotMsg(t,lead=false){
+  const m=document.getElementById('bot-msgs');
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  if(lead){
+    const b=document.createElement('div');b.className='lead-bann';
+    b.innerHTML=`<strong>✅ Details saved!</strong> A TimesTag specialist will contact you within 1 business day.<br>📞 Or call/WhatsApp now: <strong>+91-99999-99999</strong><br>📧 Email: <strong>hello@timestag.in</strong>`;
+    m.appendChild(b);
+  }
+  const r=document.createElement('div');r.className='mrow';
+  r.innerHTML=`<div class="mav">🤖</div><div class="mbbl ai">${fmt(t)}</div><span class="mtime">${time}</span>`;
+  m.appendChild(r);
+  botHistory.push({role:'assistant',content:t});
+  s2b();
+}
+function showTyp(){
+  const m=document.getElementById('bot-msgs');
+  const r=document.createElement('div');r.className='trow';r.id='typing';
+  r.innerHTML=`<div class="mav">🤖</div><div class="tbbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  m.appendChild(r);s2b();
+}
+function hideTyp(){const t=document.getElementById('typing');if(t)t.remove()}
+function s2b(){const m=document.getElementById('bot-msgs');m.scrollTop=m.scrollHeight}
+
+/* ── SEND FLOW ────────────────────────────────── */
+function sendChip(t){document.getElementById('qchips').style.display='none';addUserBotMsg(t);processMsg(t)}
+async function sendMsg(){
+  const i=document.getElementById('bot-input');const t=i.value.trim();
+  if(!t||botLoading)return;
+  addUserBotMsg(t);i.value='';i.style.height='auto';
+  await processMsg(t);
+}
+
+async function processMsg(userText){
+  botLoading=true;setDis(true);
+
+  // Step 1: Try offline knowledge base first (instant, no API needed)
+  const offlineReply = getOfflineAnswer(userText);
+
+  if(offlineReply){
+    // Simulate a small thinking delay for natural feel
+    showTyp();
+    await delay(600 + Math.random()*400);
+    hideTyp();
+    addBotMsg(offlineReply);
+    botLoading=false;setDis(false);
+    document.getElementById('bot-input').focus();
+    return;
+  }
+
+  // Step 2: Try Gemini API if key is available (for complex/unknown queries)
+  if(GKEY){
+    showTyp();
+    try{
+      let reply = await callGemini(userText);
+      hideTyp();
+      let lead=false;
+      const lm=reply.match(/LEAD_CAPTURED:([\s\S]*?\})/);
+      if(lm){try{const l=JSON.parse(lm[1]);console.log('🎯 Lead:',l);lead=true}catch(_){}reply=reply.replace(/LEAD_CAPTURED:[\s\S]*$/,'').trim()}
+      addBotMsg(reply,lead);
+    }catch(e){
+      hideTyp();
+      addBotMsg(getSuggestionAnswer(userText));
+      console.error(e);
+    }finally{botLoading=false;setDis(false);document.getElementById('bot-input').focus()}
+    return;
+  }
+
+  // Step 3: No API key — show helpful suggestion + optional upgrade prompt
+  showTyp();
+  await delay(700);
+  hideTyp();
+  addBotMsg(getSuggestionAnswer(userText));
+
+  // Quietly show the optional API upgrade bar after 2 complex questions
+  const complexCount = botHistory.filter(h=>h.role==='user').length;
+  if(complexCount >= 2 && document.getElementById('api-strip').style.display==='none'){
+    setTimeout(()=>{
+      document.getElementById('api-strip').style.display='flex';
+      addBotMsg("💡 **Tip:** For advanced AI answers on any topic, you can optionally add a free Google Gemini API key using the bar above. But I can already answer most questions about TimesTag without it! 😊");
+    }, 1500);
+  }
+
+  botLoading=false;setDis(false);document.getElementById('bot-input').focus();
+}
+
+async function callGemini(userText){
+  const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GKEY}`;
+  const contents=[
+    {role:'user',parts:[{text:'Confirm your role.'}]},
+    {role:'model',parts:[{text:"I'm NexaBot, TimesTag's AI marketing assistant. Ready to help!"}]},
+    ...botHistory.map(h=>({role:h.role==='assistant'?'model':'user',parts:[{text:h.content}]}))
+  ];
+  const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents,systemInstruction:{parts:[{text:SYSTEM_PROMPTS[currentMode]}]},generationConfig:{maxOutputTokens:600,temperature:.85}})});
+  if(!res.ok){
+    const e=await res.json();
+    if(e?.error?.message?.includes('API key not valid')||e?.error?.message?.includes('API_KEY_INVALID')){
+      GKEY='';localStorage.removeItem('tt_gemini_key');
+      return"⚠️ That API key seems invalid. I've removed it — but don't worry, I can still answer most questions!\n\nWhat would you like to know about TimesTag?";
+    }
+    throw new Error(e?.error?.message||'Gemini error');
+  }
+  const d=await res.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||"I couldn't generate a response. Please try again!";
+}
+
+function delay(ms){return new Promise(r=>setTimeout(r,ms))}
+function setDis(v){document.getElementById('bot-input').disabled=v;document.getElementById('bot-send').disabled=v}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmt(s){
+  return esc(s)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g,'<em>$1</em>')
+    .replace(/`(.*?)`/g,'<code style="background:rgba(0,180,216,.12);padding:1px 5px;border-radius:4px;font-size:.82em">$1</code>')
+    .replace(/\n/g,'<br>')
+    .replace(/•\s(.*?)(?=<br>|$)/g,'<span style="display:flex;gap:.4rem;margin:.15rem 0"><span style="color:var(--cyan);flex-shrink:0">▸</span><span>$1</span></span>');
+}
+document.getElementById('bot-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}});
+document.getElementById('bot-input').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px'});
+document.getElementById('api-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveKey()});
+if(GKEY)document.getElementById('api-input').value='••••••••••••';
+
+</script>
+</body>
+</html>
